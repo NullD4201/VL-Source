@@ -2,4 +2,10 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Engine.h"
+#include "EngineMinimal.h"
+
+#include "Networking.h"
+#include "Sockets.h"
+#include "SocketSubsystem.h"
+#include "Net/UnrealNetwork.h"
