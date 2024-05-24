@@ -1,0 +1,22 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{16AB2AF2-4547-F2C3-4D38-0DAF28EAD741}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "VClass",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		}
+	]
+}
