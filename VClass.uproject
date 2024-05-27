@@ -1,11 +1,19 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.4",
+	"EngineAssociation": "{59F82BED-4DA2-C82A-3E9D-89AD49FDDF00}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
 			"Name": "VClass",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"UMG"
+			]
+		},
+		{
+			"Name": "Dollars",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [

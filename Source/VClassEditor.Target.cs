@@ -10,6 +10,6 @@ public class VClassEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 
-		ExtraModuleNames.AddRange( new string[] { "VClass" } );
+		ExtraModuleNames.AddRange( new string[] { "VClass", "Dollars" } );
 	}
 }
