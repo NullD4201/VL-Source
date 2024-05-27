@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "../ProjectInfo.h"
 #include "Components/ActorComponent.h"
 #include "VClassGestureRecognitor.generated.h"
 

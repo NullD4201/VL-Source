@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "../ProjectInfo.h"
 #include "UObject/NoExportTypes.h"
 #include "MoCapData.generated.h"
 

@@ -3,7 +3,7 @@
 
 #include "VClassStateMachine.h"
 #include <Kismet/GameplayStatics.h>
-#include "VClassGestureRecognitor.h"
+#include "Gesture/VClassGestureRecognitor.h"
 
 
 // Sets default values

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "../ProjectInfo.h"
 #include "GameFramework/Actor.h"
 #include "VLChair.generated.h"
 

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "../ProjectInfo.h"
 #include "Blueprint/UserWidget.h"
 #include <Components/Image.h>
 #include "HostUI.generated.h"
