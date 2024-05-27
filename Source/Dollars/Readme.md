@@ -1,6 +1,6 @@
 # Dollars MoCap in VClass
 
-VClass모듈에 Dollars가 적용되는 흐름은 다음과 같습니다. **볼드**는 구현해 주셔야할 사항을 표기한 내용입니다.
+### VClass모듈에 Dollars가 적용되는 흐름은 다음과 같습니다. **볼드**는 구현해 주셔야할 사항을 표기한 내용입니다.
 
 1. DollarsServerReceiver 액터가 BeginPlay에서 OSC서버를 UOSCServer로 생성
 2. DollarsServerReceiver::OnOSCMessageReceived 함수를 생성한 UOSCServer객체의 OnOscMessageReceived 델리게이트에 다이나믹으로 바인딩
@@ -16,7 +16,9 @@ VClass모듈에 Dollars가 적용되는 흐름은 다음과 같습니다. **볼�
 12. 이후 "UE4_Mannequin_Skeleton_VL_Blueprint" Anim 블루프린트에서 해당 dollarsMoCapActor값을 읽어와 "SK_Mannequin_CtrlRig"에 전달합니다.
 13. "SK_Mannequin_CtrlRig"는 dollarsMoCapActor값을 실제 리깅에 적용합니다.
 
-"MoCapMapping" 함수에서 적용되는 규칙은 다음과 같습니다.
+
+### "MoCapMapping" 함수에서 적용되는 규칙은 다음과 같습니다.
+
 + Address 배열의 [1]값은 "Skeleton","BoneControl","Ext" 세가지 값을 가질 수 있습니다.
 + "Skeleton"일 경우, 실수값 배열의 유효성 검사를 먼저 실시합니다.(실수값 배열의 길이가 3 이상인가)
   + 유효성 검사에서 이상이 없을 경우, 실수값 배열의 [0],[1],[2]의 값으로 FVector 하나를 생성하여 tempVector에 저장합니다.(각각 x,y,z값에 매핑)
