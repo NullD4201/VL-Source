@@ -8,7 +8,7 @@ public class STT : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer" , "WebSockets" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer" , "WebSockets" , "Http", "Json", "JsonUtilities"});
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 
