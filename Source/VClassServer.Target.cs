@@ -10,6 +10,6 @@ public class VClassServerTarget : TargetRules
 		Type = TargetType.Server;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 
-		ExtraModuleNames.AddRange( new string[] { "VClass", "Dollars" } );
+		ExtraModuleNames.AddRange( new string[] { "VClass", "Dollars", "STT" } );
 	}
 }

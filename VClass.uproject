@@ -19,6 +19,16 @@
 			"AdditionalDependencies": [
 				"UMG"
 			]
+		},
+		{
+			"Name": "STT",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"UMG",
+				"Engine",
+				"AudioCapture"
+			]
 		}
 	],
 	"Plugins": [
