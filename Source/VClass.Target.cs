@@ -10,6 +10,6 @@ public class VClassTarget : TargetRules
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 
-		ExtraModuleNames.AddRange( new string[] { "VClass", "Dollars", "STT" } );
+		ExtraModuleNames.AddRange( new string[] { "VClass", "Dollars", "STTModule" } );
 	}
 }

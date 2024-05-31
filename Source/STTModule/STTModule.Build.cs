@@ -2,13 +2,13 @@
 
 using UnrealBuildTool;
 
-public class STT : ModuleRules
+public class STTModule : ModuleRules
 {
-	public STT(ReadOnlyTargetRules Target) : base(Target)
+	public STTModule(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer" , "WebSockets" , "Http", "Json", "JsonUtilities"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer" , "WebSockets" , "HTTP", "Json", "JsonUtilities" });
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 
