@@ -7,17 +7,17 @@
 void UEntryUI::NativeConstruct() {
 	Super::NativeConstruct();
 
-	addressTextBox = Cast<UEditableTextBox>(GetWidgetFromName(TEXT("et_address")));
+	addressTextBox = Cast<UEditableText>(GetWidgetFromName(TEXT("et_address")));
 	if (!addressTextBox) {
 		UE_LOG(LogTemp, Error, TEXT("Can't find \"et_address\" UEditableTextBox Widget"));
 	}
 
-	portTextBox = Cast<UEditableTextBox>(GetWidgetFromName(TEXT("et_port")));
+	portTextBox = Cast<UEditableText>(GetWidgetFromName(TEXT("et_port")));
 	if (!addressTextBox) {
 		UE_LOG(LogTemp, Error, TEXT("Can't find \"et_port\" UEditableTextBox Widget"));
 	}
 
-	seatnumTextBox = Cast<UEditableTextBox>(GetWidgetFromName(TEXT("et_seatnum")));
+	seatnumTextBox = Cast<UEditableText>(GetWidgetFromName(TEXT("et_seatnum")));
 	if (!addressTextBox) {
 		UE_LOG(LogTemp, Error, TEXT("Can't find \"et_seatnum\" UEditableTextBox Widget"));
 	}
@@ -37,10 +37,10 @@ void UEntryUI::NativeConstruct() {
 		UE_LOG(LogTemp, Error, TEXT("Can't find \"btn_entry\" UButton Widget"));
 	}
 
+
 	hostCheckBox->OnCheckStateChanged.AddDynamic(this, &UEntryUI::ToggleHostCheckBox);
 	clientCheckBox->OnCheckStateChanged.AddDynamic(this, &UEntryUI::ToggleClientCheckBox);
 }
-
 void UEntryUI::ToggleHostCheckBox(bool bisChecked) {
 	if (bisChecked) {
 		clientCheckBox->SetCheckedState(ECheckBoxState::Unchecked);
@@ -57,7 +57,7 @@ void UEntryUI::ToggleClientCheckBox(bool bisChecked) {
 
 void UEntryUI::OnClickEntryButton() {
 	this->RemoveFromParent();
-
+	UE_LOG(LogTemp, Warning, TEXT("tlfgod"));
 	AEntryPlayerController* controller = Cast<AEntryPlayerController>(GetOwningPlayer());
 	if (!controller) {
 		UE_LOG(LogTemp, Error, TEXT("Local Player Controller is NOT AEntryPlayerController!"));

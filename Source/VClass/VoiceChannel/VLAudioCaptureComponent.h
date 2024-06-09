@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "AudioCaptureComponent.h"
 #include "DSP/Osc.h"
-#include "STTAudioCaptureComponent.generated.h"
+#include "OpusAudioCompressor.h"
+#include "VLAudioCaptureComponent.generated.h"
 
 // ========================================================================
-// USTTAudioCaptureComponent
+// UVLAudioCaptureComponent
 // Synth component class which implements USynthComponent
 // This is a simple hello-world type example which generates a sine-wave
 // tone using a DSP oscillator class and implements a single function to set
@@ -20,13 +21,16 @@
 #define SYNTHCOMPONENT_EX_OSCILATOR_ENABLED 0
 
 UCLASS(ClassGroup = Synth, meta = (BlueprintSpawnableComponent))
-class STTMODULE_API USTTAudioCaptureComponent : public UAudioCaptureComponent
+class VCLASS_API UVLAudioCaptureComponent : public UAudioCaptureComponent
 {
 	GENERATED_BODY()
-
-public:
+	
 	// Called when synth is created
 	virtual bool Init(int32& SampleRate) override;
+
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// Called to generate more audio
 	virtual int32 OnGenerateAudio(float* OutAudio, int32 NumSamples) override;
@@ -35,8 +39,28 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Synth|Components|Audio")
 	void SetFrequency(const float FrequencyHz = 440.0f);
 
-	TArray<int16> pcmLinear16;
-	int32 pcmSamplesNum;
+public:
+
+	UPROPERTY(BlueprintReadOnly)
+	USoundWaveProcedural* pcmSoundWave;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 encoderFrameSize;
+	UPROPERTY(EditAnywhere)
+	int16 noiseThreshold;
+
+	UFUNCTION(Client, Reliable)
+	void ClientGetVoice(const TArray<uint8>& pcmData);
+
+	UFUNCTION(Server, Reliable)
+	void ServerUpdateVoice(const TArray<uint8>& pcmData);
+
+	TArray<int16> LINEAR16_PCM;
+	TArray<uint8> encodedPCM;
+	TArray<uint8> receivedPCM;
+
+	UPROPERTY(BlueprintReadOnly)
+	UOpusAudioCompressor* audioCompressor;
 
 protected:
 #if SYNTHCOMPONENT_EX_OSCILATOR_ENABLED

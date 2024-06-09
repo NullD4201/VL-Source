@@ -11,7 +11,8 @@
 			"AdditionalDependencies": [
 				"UMG",
 				"AudioCapture",
-				"Engine"
+				"Engine",
+				"CoreUObject"
 			]
 		},
 		{
@@ -20,16 +21,6 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"UMG"
-			]
-		},
-		{
-			"Name": "STTModule",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"UMG",
-				"Engine",
-				"AudioCapture"
 			]
 		}
 	],

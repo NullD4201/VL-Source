@@ -77,3 +77,8 @@ Content/*
 Content/
 *.uproject
 *.sln
+
+Plugins/*
+
+Packages/*
+Packages/

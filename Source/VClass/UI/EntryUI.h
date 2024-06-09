@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include <Components/EditableTextBox.h>
+#include <Components/EditableText.h>
 #include <Components/CheckBox.h>
 #include <Components/Button.h>
 #include "EntryUI.generated.h"
@@ -20,9 +20,9 @@ class VCLASS_API UEntryUI : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
-	UEditableTextBox* addressTextBox;
-	UEditableTextBox* portTextBox;
-	UEditableTextBox* seatnumTextBox;
+	UEditableText* addressTextBox;
+	UEditableText* portTextBox;
+	UEditableText* seatnumTextBox;
 
 	UCheckBox* hostCheckBox;
 	UCheckBox* clientCheckBox;

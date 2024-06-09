@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 using UnrealBuildTool;
+using System.IO;
 
 public class VClass : ModuleRules
 {
@@ -8,12 +9,16 @@ public class VClass : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer" });
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
-		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" , "Dollars" , "STTModule"});
+		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" , "Dollars"});
+		
+		string OpusPath = Path.Combine(ModuleDirectory, "ThirdParty", "opus-1.5.2");
+        PublicIncludePaths.Add(Path.Combine(OpusPath, "include"));
+        PublicAdditionalLibraries.Add(Path.Combine(OpusPath, "lib", "opus.lib"));
 		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
