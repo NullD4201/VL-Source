@@ -78,7 +78,7 @@ Content/
 *.uproject
 *.sln
 
-Plugins/*
+Plugins/UniversalVoiceChatPro/*
 
 Packages/*
 Packages/
