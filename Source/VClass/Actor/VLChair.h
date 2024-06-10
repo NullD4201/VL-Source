@@ -15,6 +15,20 @@ public:
 	// Sets default values for this actor's properties
 	AVLChair();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* ChairBody;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* ChairButton;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	USceneComponent* SitTransform;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+
+	UFUNCTION(BlueprintCallable)
+	FTransform GetSittingTransform();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -22,17 +36,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* Body;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	USceneComponent* SitTransform;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString name;
-
-	UFUNCTION(BlueprintCallable)
-	FTransform GetSittingTransform();
 	
 };

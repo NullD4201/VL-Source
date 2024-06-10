@@ -9,3 +9,13 @@
 #include "Sockets.h"
 #include "SocketSubsystem.h"
 #include "Net/UnrealNetwork.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(VClass, Log, All);
+
+UENUM(BlueprintType)
+enum class EPlayerType : uint8
+{
+	Client,
+	Host,
+	None
+};

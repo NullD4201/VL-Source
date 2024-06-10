@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-using UnrealBuildTool;
 using System.IO;
+using UnrealBuildTool;
 
 public class VClass : ModuleRules
 {
@@ -17,8 +17,8 @@ public class VClass : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" , "Dollars"});
 		
 		string OpusPath = Path.Combine(ModuleDirectory, "ThirdParty", "opus-1.5.2");
-        PublicIncludePaths.Add(Path.Combine(OpusPath, "include"));
-        PublicAdditionalLibraries.Add(Path.Combine(OpusPath, "lib", "opus.lib"));
+		PublicIncludePaths.Add(Path.Combine(OpusPath, "include"));
+		PublicAdditionalLibraries.Add(Path.Combine(OpusPath, "lib", "opus.lib"));
 		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");

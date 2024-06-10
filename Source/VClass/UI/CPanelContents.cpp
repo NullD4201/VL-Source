@@ -1,5 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "ProjectInfo.h"
 
-DEFINE_LOG_CATEGORY(VClass)
+#include "CPanelContents.h"
+
+
+
+

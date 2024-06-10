@@ -75,7 +75,7 @@ DerivedDataCache/*
 
 Content/*
 Content/
-*.uproject
+VClass.uproject
 *.sln
 
 Plugins/UniversalVoiceChatPro/*
