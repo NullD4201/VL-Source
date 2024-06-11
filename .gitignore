@@ -79,6 +79,6 @@ VClass.uproject
 *.sln
 
 Packages/*
-Packages/
+!Packages/KeyGenerator/
 
 Source/VClass/ThirdParty/opus-1.5.2/*
