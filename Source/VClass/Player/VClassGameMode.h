@@ -16,4 +16,13 @@ class VCLASS_API AVClassGameMode : public AGameModeBase
 
 public:
 	AVClassGameMode();
+
+	virtual void PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage) override;
+
+	virtual void BeginPlay() override;
+
+private:
+	bool ReadTextFile(FString FilePath, FString& FileContent);
+
+	TArray<FString> key_list;
 };
