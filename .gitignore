@@ -80,3 +80,5 @@ VClass.uproject
 
 Packages/*
 Packages/
+
+Source/VClass/ThirdParty/opus-1.5.2/*
