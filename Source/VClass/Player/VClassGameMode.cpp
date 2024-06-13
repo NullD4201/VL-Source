@@ -16,18 +16,31 @@ void AVClassGameMode::PreLogin(const FString& Options, const FString& Address, c
 {
     Super::PreLogin(Options, Address, UniqueId, ErrorMessage);
 
-    FString key;
-    FParse::Value(*Options, TEXT("Key="), key);
+    FString key = UGameplayStatics::ParseOption(Options, TEXT("Key"));
 
-    TArray<FString> tempTArr;
-    key.ParseIntoArray(tempTArr, TEXT("?"));
+    UE_LOG(LogTemp, Warning, TEXT("%s"), *key);
 
-    UE_LOG(LogTemp, Warning, TEXT("%s"), *tempTArr[0]);
-
-    if (!key_list.Contains(tempTArr[0])) {
+    if (!keyMap.Contains(key) && keyMap[key]) {
         ErrorMessage = TEXT("Your key is not vaild");
         return;
     }
+
+    lastLoginRequestOption = *Options;
+    keyMap[key] = true;
+}
+
+void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
+    AVClassPlayerController* player = Cast<AVClassPlayerController>(NewPlayerController);
+    if (!player) {
+        UE_LOG(LogTemp, Error, TEXT("Player Controller connected is not vaild!"));
+        return;
+    }
+    
+    FString isHost = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("IsHost"));
+
+    player->bIsHost = isHost == TEXT("true") ? true : false;
+
+    UE_LOG(LogTemp, Warning, TEXT("bIsHost set %s"), player->bIsHost ? TEXT("true") : TEXT("false"));
 }
 
 void AVClassGameMode::BeginPlay() {
@@ -38,6 +51,8 @@ void AVClassGameMode::BeginPlay() {
     FString FilePath = FPaths::Combine(FPaths::ProjectDir(), TEXT("keys.txt"));
     FString FileContent;
 
+    TArray<FString> key_list;
+
     if (ReadTextFile(FilePath, FileContent))
     {
         UE_LOG(LogTemp, Log, TEXT("Text File Content:\n%s"), *FileContent);
@@ -47,6 +62,7 @@ void AVClassGameMode::BeginPlay() {
         for (const FString& line : key_list)
         {
             UE_LOG(LogTemp, Log, TEXT("Line: %s"), *line);
+            keyMap.Add(line, false);
         }
     }
     else

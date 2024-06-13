@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "VClass/Data/Input/InputDataConfig.h"
+#include "VClassGameMode.h"
 
 AVClassPlayerController::AVClassPlayerController()
 {
@@ -20,15 +21,19 @@ void AVClassPlayerController::BeginPlay()
 	FInputModeGameOnly InputModeGameOnly;
 	SetInputMode(InputModeGameOnly);
 
+	ServerSendHostRequest(HostRequest::TEST_REQ);
+	/*
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	const UInputDataConfig* InputDataConfig = GetDefault<UInputDataConfig>();
 	Subsystem->AddMappingContext(InputDataConfig->DefaultContext, 0);
+	*/
 }
 
 void AVClassPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
+	/*
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	ensure(EnhancedInputComponent);
 
@@ -36,6 +41,7 @@ void AVClassPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(InputDataConfig->Move, ETriggerEvent::Triggered, this, &AVClassPlayerController::OnMove);
 	EnhancedInputComponent->BindAction(InputDataConfig->Look, ETriggerEvent::Triggered, this, &AVClassPlayerController::OnLook);
 	EnhancedInputComponent->BindAction(InputDataConfig->Interact, ETriggerEvent::Triggered, this, &AVClassPlayerController::OnInteract);
+	*/
 }
 
 void AVClassPlayerController::Tick(float DeltaSeconds)
@@ -82,4 +88,58 @@ void AVClassPlayerController::OnLook(const FInputActionValue& InputActionValue)
 
 void AVClassPlayerController::OnInteract(const FInputActionValue& InputActionValue)
 {
+}
+
+void AVClassPlayerController::ServerSendHostRequest_Implementation(HostRequest request) {
+	int32 id = PlayerState->GetPlayerId();
+
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		APlayerController* PlayerController = Iterator->Get();
+		if (PlayerController->IsA<AVClassPlayerController>())
+		{
+			AVClassPlayerController* controller = Cast<AVClassPlayerController>(PlayerController);
+			if (controller->bIsHost) {
+				controller->ClientGetHostRequest(request, id);
+			}
+		}
+	}
+}
+
+void AVClassPlayerController::ServerSendClientRequest_Implementation(ClientRequest request, int32 Id) {
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator) {
+		APlayerController* PlayerController = Iterator->Get();
+		if (PlayerController->IsA<AVClassPlayerController>() && PlayerController->PlayerState->GetPlayerId() == Id) {
+			AVClassPlayerController* controller = Cast<AVClassPlayerController>(PlayerController);
+			controller->ClientGetClientRequest(request);
+		}
+	}
+}
+
+void AVClassPlayerController::ClientGetHostRequest_Implementation(HostRequest request, int32 Id) {
+	switch (request)
+	{
+	case HostRequest::TEST_REQ:
+		ServerSendClientRequest(ClientRequest::TEST_REPL, Id);
+		break;
+	case HostRequest::QUESTION:
+		break;
+	default:
+		break;
+	}
+}
+
+void AVClassPlayerController::ClientGetClientRequest_Implementation(ClientRequest request) {
+	switch (request)
+	{
+	case ClientRequest::TEST_REPL:
+		UE_LOG(LogTemp, Warning, TEXT("Test Request Complete!"));
+		break;
+	case ClientRequest::QUESTION_VAILD:
+		break;
+	case ClientRequest::QUESTION_INVAILD:
+		break;
+	default:
+		break;
+	}
 }

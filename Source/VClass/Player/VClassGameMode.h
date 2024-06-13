@@ -19,10 +19,14 @@ public:
 
 	virtual void PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage) override;
 
+	virtual void PostLogin(APlayerController *NewPlayer) override;
+
 	virtual void BeginPlay() override;
 
 private:
 	bool ReadTextFile(FString FilePath, FString& FileContent);
 
-	TArray<FString> key_list;
+	TMap<FString, bool> keyMap;
+
+	FString lastLoginRequestOption;
 };

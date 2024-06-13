@@ -7,9 +7,19 @@
 #include "GameFramework/PlayerController.h"
 #include "VClassPlayerController.generated.h"
 
-/**
- * 
- */
+UENUM()
+enum class HostRequest : uint8 {
+	TEST_REQ,
+	QUESTION
+};
+
+UENUM()
+enum class ClientRequest : uint8 {
+	TEST_REPL,
+	QUESTION_VAILD,
+	QUESTION_INVAILD
+};
+
 UCLASS()
 class VCLASS_API AVClassPlayerController : public APlayerController
 {
@@ -24,6 +34,25 @@ public:
 	virtual void SetupInputComponent() override;
 
 	virtual void Tick(float DeltaSeconds) override;
+
+	UFUNCTION(Server,Reliable)
+	void ServerSendHostRequest(HostRequest request);
+	void ServerSendHostRequest_Implementation(HostRequest request);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSendClientRequest(ClientRequest request, int32 Id);
+	void ServerSendClientRequest_Implementation(ClientRequest request, int32 Id);
+
+	UFUNCTION(Client,Reliable)
+	void ClientGetHostRequest(HostRequest request, int32 Id);
+	void ClientGetHostRequest_Implementation(HostRequest request,int32 Id);
+
+	UFUNCTION(Client,Reliable)
+	void ClientGetClientRequest(ClientRequest request);
+	void ClientGetClientRequest_Implementation(ClientRequest request);
+
+	bool bIsHost = false;
+	FString SeatNum;
 
 protected:
 	void OnMove(const FInputActionValue& InputActionValue);
