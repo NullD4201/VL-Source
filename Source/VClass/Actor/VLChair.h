@@ -4,6 +4,7 @@
 
 #include "../ProjectInfo.h"
 #include "GameFramework/Actor.h"
+#include <VClass/Player/VClassPlayerController.h>
 #include "VLChair.generated.h"
 
 UCLASS()
@@ -28,6 +29,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FTransform GetSittingTransform();
+
+	UFUNCTION(BlueprintCallable)
+	bool SetClient(AVClassPlayerController* Controller);
 
 protected:
 	// Called when the game starts or when spawned

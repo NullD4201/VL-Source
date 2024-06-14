@@ -23,6 +23,11 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void Logout(AController* Exiting) override;
+
+	int CurrentPlayerNum;
+	int MaxPlayer;
+
 private:
 	bool ReadTextFile(FString FilePath, FString& FileContent);
 

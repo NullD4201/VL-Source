@@ -5,6 +5,7 @@
 
 #include "VClassPlayerController.h"
 #include "Misc/Paths.h"
+#include "PlayerVoiceChatActor.h"
 
 
 AVClassGameMode::AVClassGameMode()
@@ -25,8 +26,14 @@ void AVClassGameMode::PreLogin(const FString& Options, const FString& Address, c
         return;
     }
 
+    if (CurrentPlayerNum >= MaxPlayer) {
+        ErrorMessage = TEXT("The Server is FULL!");
+    }
+
     lastLoginRequestOption = *Options;
     keyMap[key] = true;
+
+    CurrentPlayerNum += 1;
 }
 
 void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
@@ -41,6 +48,11 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
     player->bIsHost = isHost == TEXT("true") ? true : false;
 
     UE_LOG(LogTemp, Warning, TEXT("bIsHost set %s"), player->bIsHost ? TEXT("true") : TEXT("false"));
+
+    FActorSpawnParameters params;
+    params.Owner = NewPlayerController;
+
+    GetWorld()->SpawnActor<APlayerVoiceChatActor>(APlayerVoiceChatActor::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, params);
 }
 
 void AVClassGameMode::BeginPlay() {
@@ -69,6 +81,10 @@ void AVClassGameMode::BeginPlay() {
     {
         UE_LOG(LogTemp, Error, TEXT("Failed to read the text file."));
     }
+}
+
+void AVClassGameMode::Logout(AController* Exiting) {
+    CurrentPlayerNum -= 1;
 }
 
 bool AVClassGameMode::ReadTextFile(FString FilePath, FString& FileContent) {

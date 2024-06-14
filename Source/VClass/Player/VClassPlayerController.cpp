@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "VClass/Data/Input/InputDataConfig.h"
 #include "VClassGameMode.h"
+#include <PlayerVoiceChatActor.h>
 
 AVClassPlayerController::AVClassPlayerController()
 {
@@ -53,6 +54,8 @@ void AVClassPlayerController::OnMove(const FInputActionValue& InputActionValue)
 {
 	APawn* ControllerPawn = GetPawn();
 
+	if (!bIsHost) return;
+
 	const FRotator Rotation = K2_GetActorRotation();
 	const FRotator YawRotation = FRotator(0, Rotation.Yaw, 0);
 	const FVector ForwardVector = YawRotation.Vector();
@@ -84,10 +87,15 @@ void AVClassPlayerController::OnMove(const FInputActionValue& InputActionValue)
 
 void AVClassPlayerController::OnLook(const FInputActionValue& InputActionValue)
 {
+	FVector2D value = InputActionValue.Get<FVector2D>();
+
+	AddPitchInput(value.Y);
+	AddYawInput(value.X);
 }
 
 void AVClassPlayerController::OnInteract(const FInputActionValue& InputActionValue)
 {
+	InteractionDelegate.Execute(InputActionValue);
 }
 
 void AVClassPlayerController::ServerSendHostRequest_Implementation(HostRequest request) {
@@ -136,8 +144,10 @@ void AVClassPlayerController::ClientGetClientRequest_Implementation(ClientReques
 		UE_LOG(LogTemp, Warning, TEXT("Test Request Complete!"));
 		break;
 	case ClientRequest::QUESTION_VAILD:
+		UUniversalVoiceChat::VoiceChatStartSpeak(false, true, 0, false);
 		break;
 	case ClientRequest::QUESTION_INVAILD:
+		UUniversalVoiceChat::VoiceChatStopSpeak();
 		break;
 	default:
 		break;

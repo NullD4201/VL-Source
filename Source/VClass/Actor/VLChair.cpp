@@ -48,6 +48,13 @@ void AVLChair::Tick(float DeltaTime)
 
 }
 
+bool AVLChair::SetClient(AVClassPlayerController* Controller) {
+	Controller->InteractionDelegate.BindLambda([Controller](const FInputActionValue& value) {
+		Controller->ServerSendHostRequest(HostRequest::QUESTION);
+	});
+	return true;
+}
+
 FTransform AVLChair::GetSittingTransform() {
 	return SitTransform->GetComponentTransform();
 }

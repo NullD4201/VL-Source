@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include "VClassPlayerController.generated.h"
 
+DECLARE_DELEGATE_OneParam(FVClassInteractonDelegate, const FInputActionValue&);
+
 UENUM()
 enum class HostRequest : uint8 {
 	TEST_REQ,
@@ -50,6 +52,8 @@ public:
 	UFUNCTION(Client,Reliable)
 	void ClientGetClientRequest(ClientRequest request);
 	void ClientGetClientRequest_Implementation(ClientRequest request);
+
+	FVClassInteractonDelegate InteractionDelegate;
 
 	bool bIsHost = false;
 	FString SeatNum;
