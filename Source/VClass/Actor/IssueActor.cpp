@@ -3,11 +3,13 @@
 
 #include "IssueActor.h"
 
-#include "VClass/Player/JihoonTestPlayerController.h"
+#include "VClass/Player/VClassPlayerController.h"
 
 
-AIssueActor::AIssueActor()
+AIssueActor::AIssueActor(int32 HostIdentifier, int32 PlayerIdentifier)
 {
+	this->HostIdentifier = HostIdentifier;
+	this->PlayerIdentifier = PlayerIdentifier;
 }
 
 void AIssueActor::BeginPlay()
@@ -16,9 +18,9 @@ void AIssueActor::BeginPlay()
 
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0))
 	{
-		if (AJihoonTestPlayerController* JihoonTestPlayerController = Cast<AJihoonTestPlayerController>(PlayerController))
+		if (AVClassPlayerController* VClassPlayerController = Cast<AVClassPlayerController>(PlayerController))
 		{
-			if (JihoonTestPlayerController->PlayerId == 0 || JihoonTestPlayerController->PlayerId == 1)
+			if (VClassPlayerController->PlayerId == this->HostIdentifier || VClassPlayerController->PlayerId == this->PlayerIdentifier)
 			{
 				SetActorHiddenInGame(false);
 			}

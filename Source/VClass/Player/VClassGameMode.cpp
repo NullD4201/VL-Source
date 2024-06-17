@@ -42,6 +42,13 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
         UE_LOG(LogTemp, Error, TEXT("Player Controller connected is not vaild!"));
         return;
     }
+
+    AVClassPlayerController* VClassPlayerController = Cast<AVClassPlayerController>(NewPlayerController);
+    if (VClassPlayerController)
+    {
+        // TODO 플레이어 ID 설정해서 액터 활성화 체킹
+        // VClassPlayerController->PlayerId = 0;
+    }
     
     FString isHost = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("IsHost"));
 

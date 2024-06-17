@@ -30,6 +30,9 @@ class VCLASS_API AVClassPlayerController : public APlayerController
 public:
 	AVClassPlayerController();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Player")
+	int32 PlayerId;
+
 	float mMoveDir;
 
 	virtual void BeginPlay() override;

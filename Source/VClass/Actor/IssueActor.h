@@ -15,7 +15,14 @@ class VCLASS_API AIssueActor : public AQuestionActor
 	GENERATED_BODY()
 
 public:
-	AIssueActor();
+	AIssueActor(int32 HostIdentifier, int32 PlayerIdentifier);
 
 	virtual void BeginPlay() override;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 HostIdentifier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 PlayerIdentifier;
 };
