@@ -27,11 +27,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
 
+	bool IsSetted = false;
+
 	UFUNCTION(BlueprintCallable)
 	FTransform GetSittingTransform();
 
 	UFUNCTION(BlueprintCallable)
 	bool SetClient(AVClassPlayerController* Controller);
+
 
 protected:
 	// Called when the game starts or when spawned

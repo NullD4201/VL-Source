@@ -25,7 +25,14 @@ public:
 
 	virtual void Logout(AController* Exiting) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<APawn> HostPawn;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<APawn> ClientPawn;
+
 	int CurrentPlayerNum;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MaxPlayer;
 
 private:

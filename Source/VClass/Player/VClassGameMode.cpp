@@ -21,7 +21,7 @@ void AVClassGameMode::PreLogin(const FString& Options, const FString& Address, c
 
     UE_LOG(LogTemp, Warning, TEXT("%s"), *key);
 
-    if (!keyMap.Contains(key) && keyMap[key]) {
+    if (!keyMap.Contains(key) || keyMap[key]) {
         ErrorMessage = TEXT("Your key is not vaild");
         return;
     }
@@ -29,6 +29,7 @@ void AVClassGameMode::PreLogin(const FString& Options, const FString& Address, c
     if (CurrentPlayerNum >= MaxPlayer) {
         ErrorMessage = TEXT("The Server is FULL!");
     }
+    
 
     lastLoginRequestOption = *Options;
     keyMap[key] = true;
@@ -42,13 +43,6 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
         UE_LOG(LogTemp, Error, TEXT("Player Controller connected is not vaild!"));
         return;
     }
-
-    AVClassPlayerController* VClassPlayerController = Cast<AVClassPlayerController>(NewPlayerController);
-    if (VClassPlayerController)
-    {
-        // TODO 플레이어 ID 설정해서 액터 활성화 체킹
-        // VClassPlayerController->PlayerId = 0;
-    }
     
     FString isHost = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("IsHost"));
 
@@ -60,6 +54,35 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
     params.Owner = NewPlayerController;
 
     GetWorld()->SpawnActor<APlayerVoiceChatActor>(APlayerVoiceChatActor::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, params);
+
+    TActorIterator<APlayerStart> It(GetWorld());
+    APlayerStart* playerStart = *It;
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.Owner = NewPlayerController;
+    if (player->bIsHost) {
+        APawn* pawn = GetWorld()->SpawnActor<APawn>(HostPawn, playerStart->GetTransform(), SpawnParams);
+        player->Possess(pawn);
+    }
+    else {
+        APawn* pawn = GetWorld()->SpawnActor<APawn>(ClientPawn, playerStart->GetTransform(), SpawnParams);
+        player->Possess(pawn);
+        FString seatNum = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("SeatNum"));
+        UVLChairManagerSubsystem* chairManager = GetGameInstance()->GetSubsystem<UVLChairManagerSubsystem>();
+        if (seatNum.IsEmpty()) {
+            for(auto ValueIter = chairManager->ChairMap.CreateConstIterator(); ValueIter; ++ValueIter) {
+                AVLChair* chair = ValueIter.Value();
+                UE_LOG(LogTemp, Warning, TEXT("%s"), *chair->Name);
+                if (chair->SetClient(player)) {
+                    break;
+                }
+            }
+        }
+        else {
+            if (chairManager) {
+                chairManager->GetChairByName(seatNum)->SetClient(player);
+            }
+        }
+    }
 }
 
 void AVClassGameMode::BeginPlay() {

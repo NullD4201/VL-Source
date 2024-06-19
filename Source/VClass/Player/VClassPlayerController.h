@@ -8,6 +8,7 @@
 #include "VClassPlayerController.generated.h"
 
 DECLARE_DELEGATE_OneParam(FVClassInteractonDelegate, const FInputActionValue&);
+DECLARE_DELEGATE(FVClassControllerLogoutDelegate);
 
 UENUM()
 enum class HostRequest : uint8 {
@@ -57,6 +58,7 @@ public:
 	void ClientGetClientRequest_Implementation(ClientRequest request);
 
 	FVClassInteractonDelegate InteractionDelegate;
+	FVClassControllerLogoutDelegate LogoutDelegate;
 
 	bool bIsHost = false;
 	FString SeatNum;

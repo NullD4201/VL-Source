@@ -23,18 +23,19 @@ void AVClassPlayerController::BeginPlay()
 	SetInputMode(InputModeGameOnly);
 
 	ServerSendHostRequest(HostRequest::TEST_REQ);
-	/*
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	const UInputDataConfig* InputDataConfig = GetDefault<UInputDataConfig>();
-	Subsystem->AddMappingContext(InputDataConfig->DefaultContext, 0);
-	*/
+	
+	if (!HasAuthority()) {
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+		const UInputDataConfig* InputDataConfig = GetDefault<UInputDataConfig>();
+		Subsystem->AddMappingContext(InputDataConfig->DefaultContext, 0);
+	}
+	
 }
 
 void AVClassPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	/*
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	ensure(EnhancedInputComponent);
 
@@ -42,7 +43,6 @@ void AVClassPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(InputDataConfig->Move, ETriggerEvent::Triggered, this, &AVClassPlayerController::OnMove);
 	EnhancedInputComponent->BindAction(InputDataConfig->Look, ETriggerEvent::Triggered, this, &AVClassPlayerController::OnLook);
 	EnhancedInputComponent->BindAction(InputDataConfig->Interact, ETriggerEvent::Triggered, this, &AVClassPlayerController::OnInteract);
-	*/
 }
 
 void AVClassPlayerController::Tick(float DeltaSeconds)

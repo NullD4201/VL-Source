@@ -49,9 +49,20 @@ void AVLChair::Tick(float DeltaTime)
 }
 
 bool AVLChair::SetClient(AVClassPlayerController* Controller) {
+	if (IsSetted) return false;
+
+	APawn* pawn = Controller->GetPawn();
+	pawn->SetActorTransform(GetSittingTransform());
+
 	Controller->InteractionDelegate.BindLambda([Controller](const FInputActionValue& value) {
-		Controller->ServerSendHostRequest(HostRequest::QUESTION);
+		if(value.Get<bool>())
+			Controller->ServerSendHostRequest(HostRequest::QUESTION);
 	});
+	Controller->LogoutDelegate.BindLambda([this]() {
+		this->IsSetted = false;
+	});
+	IsSetted = true;
+
 	return true;
 }
 
