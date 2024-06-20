@@ -15,7 +15,7 @@ class VCLASS_API AIssueActor : public AQuestionActor
 	GENERATED_BODY()
 
 public:
-	AIssueActor(int32 HostIdentifier, int32 PlayerIdentifier);
+	void Initialize(int32 hostIdentifier, int32 playerIdentifier);
 
 	virtual void BeginPlay() override;
 

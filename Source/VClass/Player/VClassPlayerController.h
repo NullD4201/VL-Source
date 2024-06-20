@@ -5,6 +5,7 @@
 #include "InputActionValue.h"
 #include "../ProjectInfo.h"
 #include "GameFramework/PlayerController.h"
+#include <VClass/Gesture/VClassGestureRecognitor.h>
 #include "VClassPlayerController.generated.h"
 
 DECLARE_DELEGATE_OneParam(FVClassInteractonDelegate, const FInputActionValue&);
@@ -56,6 +57,9 @@ public:
 	UFUNCTION(Client,Reliable)
 	void ClientGetClientRequest(ClientRequest request);
 	void ClientGetClientRequest_Implementation(ClientRequest request);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UVClassGestureRecognitor* GestureRecognitor;
 
 	FVClassInteractonDelegate InteractionDelegate;
 	FVClassControllerLogoutDelegate LogoutDelegate;

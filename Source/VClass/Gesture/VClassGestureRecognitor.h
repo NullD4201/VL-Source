@@ -30,6 +30,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FString Predict();
+
+	UFUNCTION(BlueprintCallable)
+	float GetRotatorRMS(FRotator rotator);
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FString CurrentGesture;

@@ -6,6 +6,8 @@
 #include "VClassPlayerController.h"
 #include "Misc/Paths.h"
 #include "PlayerVoiceChatActor.h"
+#include <VClass/Actor/VLChair.h>
+#include <VClass/Actor/VLChairManagerSubsystem.h>
 
 
 AVClassGameMode::AVClassGameMode()
@@ -115,6 +117,7 @@ void AVClassGameMode::BeginPlay() {
 
 void AVClassGameMode::Logout(AController* Exiting) {
     CurrentPlayerNum -= 1;
+    Exiting->GetPawn()->Destroy();
 }
 
 bool AVClassGameMode::ReadTextFile(FString FilePath, FString& FileContent) {

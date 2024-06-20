@@ -9,7 +9,10 @@ UVClassGestureRecognitor::UVClassGestureRecognitor()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
+	PrimaryComponentTick.Target = this;
 	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.SetTickFunctionEnable(true);
+	PrimaryComponentTick.RegisterTickFunction(GetComponentLevel());
 
 	// ...
 }
@@ -39,6 +42,10 @@ void UVClassGestureRecognitor::TickComponent(float DeltaTime, ELevelTick TickTyp
 			CurrentGesture = *prediction;
 		}
 	}
+}
+
+float UVClassGestureRecognitor::GetRotatorRMS(FRotator rotator) {
+	return FMath::Sqrt((rotator.Yaw * rotator.Yaw + rotator.Pitch * rotator.Pitch + rotator.Roll * rotator.Roll) / 3.0);
 }
 
 float** UVClassGestureRecognitor::MatrixM2D(float** A, int* A_Shape, float** B, int* B_Shape, bool& bOutSuccessful) {

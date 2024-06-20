@@ -14,6 +14,8 @@ AVClassPlayerController::AVClassPlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	GestureRecognitor = CreateDefaultSubobject<UVClassGestureRecognitor>(TEXT("GESTURE_RECOGNITOR"));
+
 	SetReplicates(true);
 }
 
