@@ -3,16 +3,18 @@
 
 #include "VClassGestureRecognitor.h"
 
+#include "../Player/VClassPlayerController.h"
+
 
 // Sets default values for this component's properties
-UVClassGestureRecognitor::UVClassGestureRecognitor()
+UVClassGestureRecognitor::UVClassGestureRecognitor(const FObjectInitializer& ObjectInitializer)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.Target = this;
 	PrimaryComponentTick.bCanEverTick = true;
-	PrimaryComponentTick.SetTickFunctionEnable(true);
-	PrimaryComponentTick.RegisterTickFunction(GetComponentLevel());
+	PrimaryComponentTick.TickGroup = TG_PrePhysics;
+	SetComponentTickEnabled(true);
+	SetActive(true);
 
 	// ...
 }
@@ -22,9 +24,7 @@ UVClassGestureRecognitor::UVClassGestureRecognitor()
 void UVClassGestureRecognitor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
+	AVClassPlayerController* owner = Cast<AVClassPlayerController>(GetOwner());
 }
 
 
@@ -32,6 +32,7 @@ void UVClassGestureRecognitor::BeginPlay()
 void UVClassGestureRecognitor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
 	FString prediction = Predict();
 	if (!GetOwner()->HasAuthority()) {
 		if (*CurrentGesture != nullptr && !CurrentGesture.Equals(*prediction)) {

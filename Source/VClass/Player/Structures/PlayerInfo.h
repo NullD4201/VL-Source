@@ -11,12 +11,15 @@ struct FPlayerInfo
 {
 	GENERATED_USTRUCT_BODY();
 public:
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	FString name;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	FString sitNum;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	FString Key;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool isHost;
 };

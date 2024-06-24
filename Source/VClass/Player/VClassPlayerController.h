@@ -6,6 +6,7 @@
 #include "../ProjectInfo.h"
 #include "GameFramework/PlayerController.h"
 #include <VClass/Gesture/VClassGestureRecognitor.h>
+#include <VClass/Player/Structures/PlayerInfo.h>
 #include "VClassPlayerController.generated.h"
 
 DECLARE_DELEGATE_OneParam(FVClassInteractonDelegate, const FInputActionValue&);
@@ -60,6 +61,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UVClassGestureRecognitor* GestureRecognitor;
+
+	UPROPERTY(VisibleAnywhere, replicated)
+	FPlayerInfo info;
 
 	FVClassInteractonDelegate InteractionDelegate;
 	FVClassControllerLogoutDelegate LogoutDelegate;

@@ -80,5 +80,6 @@ VClass.uproject
 
 Packages/*
 !Packages/KeyGenerator/
+!Packages/HTTP_Server/
 
 Source/VClass/ThirdParty/opus-1.5.2/*

@@ -15,7 +15,7 @@ class VCLASS_API UVClassGestureRecognitor : public UActorComponent
 
 public:	
 	// Sets default values for this component's properties
-	UVClassGestureRecognitor();
+	UVClassGestureRecognitor(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	// Called when the game starts

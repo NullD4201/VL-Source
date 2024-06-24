@@ -14,6 +14,19 @@ class VCLASS_API UImportFiles : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
+public:
 	UFUNCTION(BlueprintCallable)
 	static UTexture2D* OpenFIleDialogueAndLoadImage();	
+
+	UFUNCTION(BlueprintCallable)
+	static void OpenFIleDialogueAndUploadImage(FString ImageName);
+
+	UFUNCTION(BlueprintCallable)
+	static UTexture2D* CreateTextureFromBytes(const TArray<uint8>& ImageData, int32 Width, int32 Height, EPixelFormat PixelFormat, bool bSRGB);
+
+	UFUNCTION(BlueprintCallable)
+	static bool ConvertTextureToByteArray(UTexture2D* Texture, TArray<uint8>& OutByteArray);
+
+	UFUNCTION(BlueprintCallable)
+	static UTexture2D* LoadTextureFromBytes(const TArray<uint8>& ImageData);
 };

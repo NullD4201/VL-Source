@@ -6,9 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "VClassGameMode.generated.h"
 
-/**
- * 
- */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnClientLoginDelegate, AVClassPlayerController*, player);
+
 UCLASS()
 class VCLASS_API AVClassGameMode : public AGameModeBase
 {
@@ -24,6 +23,8 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void Logout(AController* Exiting) override;
+
+	FOnClientLoginDelegate OnClientLogin;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<APawn> HostPawn;

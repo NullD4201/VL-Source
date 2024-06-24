@@ -40,6 +40,9 @@ void AVClassGameMode::PreLogin(const FString& Options, const FString& Address, c
 }
 
 void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
+
+    Super::PostLogin(NewPlayerController);
+
     AVClassPlayerController* player = Cast<AVClassPlayerController>(NewPlayerController);
     if (!player) {
         UE_LOG(LogTemp, Error, TEXT("Player Controller connected is not vaild!"));
@@ -49,6 +52,8 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
     FString isHost = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("IsHost"));
 
     player->bIsHost = isHost == TEXT("true") ? true : false;
+
+    player->info.Key = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("Key"));
 
     UE_LOG(LogTemp, Warning, TEXT("bIsHost set %s"), player->bIsHost ? TEXT("true") : TEXT("false"));
 
@@ -85,6 +90,8 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
             }
         }
     }
+
+    OnClientLogin.Broadcast(player);
 }
 
 void AVClassGameMode::BeginPlay() {
@@ -116,8 +123,14 @@ void AVClassGameMode::BeginPlay() {
 }
 
 void AVClassGameMode::Logout(AController* Exiting) {
+    Super::Logout(Exiting);
+    UE_LOG(LogTemp, Warning, TEXT("AVClassGameMode::Logout"));
     CurrentPlayerNum -= 1;
-    Exiting->GetPawn()->Destroy();
+    if (AVClassPlayerController* player = Cast<AVClassPlayerController>(Exiting)) {
+        UE_LOG(LogTemp, Warning, TEXT("%s"), *player->info.Key);
+        keyMap[player->info.Key] = false;
+        player->UnPossess();
+    }
 }
 
 bool AVClassGameMode::ReadTextFile(FString FilePath, FString& FileContent) {

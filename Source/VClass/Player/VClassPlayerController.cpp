@@ -13,18 +13,26 @@
 AVClassPlayerController::AVClassPlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
 
 	GestureRecognitor = CreateDefaultSubobject<UVClassGestureRecognitor>(TEXT("GESTURE_RECOGNITOR"));
+}
 
-	SetReplicates(true);
+void AVClassPlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AVClassPlayerController, info);
 }
 
 void AVClassPlayerController::BeginPlay()
 {
+	Super::BeginPlay();
+
 	FInputModeGameOnly InputModeGameOnly;
 	SetInputMode(InputModeGameOnly);
 
 	ServerSendHostRequest(HostRequest::TEST_REQ);
+	GestureRecognitor->SetActive(true);
 	
 	if (!HasAuthority()) {
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());

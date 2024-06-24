@@ -9,7 +9,7 @@ public class VClass : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer", "Networking" , "Voice", "UniversalVoiceChatPro" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer", "Networking" , "Voice", "UniversalVoiceChatPro", "HTTP" });
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 
