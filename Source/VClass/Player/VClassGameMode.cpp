@@ -12,6 +12,7 @@
 
 AVClassGameMode::AVClassGameMode()
 {
+    DefaultPawnClass = nullptr;
 	PlayerControllerClass = AVClassPlayerController::StaticClass();
 }
 

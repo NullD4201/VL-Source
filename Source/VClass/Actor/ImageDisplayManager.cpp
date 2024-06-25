@@ -79,12 +79,21 @@ void AImageDisplayManager::OnClientLogin(AVClassPlayerController* player) {
 	}
 }
 
-void AImageDisplayManager::ServerDisplayImage_Implementation(ImageAppearMode Mode, int Index) {
-	ClientDisplayImage(Mode, Index);
+void AImageDisplayManager::ServerDisplayImage_Implementation(ImageAppearMode Mode, int Index, const FString& ImageName) {
+	ClientDisplayImage(Mode, Index, ImageName);
 }
 
-void AImageDisplayManager::ClientDisplayImage_Implementation(ImageAppearMode Mode, int Index) {
-
+void AImageDisplayManager::ClientDisplayImage_Implementation(ImageAppearMode Mode, int Index, const FString& ImageName) {
+	USceneComponent* parent = Cast<USceneComponent>(GetDefaultSubobjectByName(*ImageAppearModeToString(Mode)));
+	if (parent) {
+		TArray<USceneComponent*> panels;
+		parent->GetChildrenComponents(true, panels);
+		UStaticMeshComponent* panel_mesh = Cast<UStaticMeshComponent>(panels[0]);
+		if (panel_mesh) {
+			target_panel = panel_mesh;
+			GetImageFromServer(ImageName);
+		}
+	}
 }
 
 void AImageDisplayManager::SendImageToServer(const TArray<uint8>& ImageData) {
@@ -124,13 +133,7 @@ void AImageDisplayManager::HandleImageReceived(FHttpRequestPtr Request, FHttpRes
 		{
 			// 텍스처를 성공적으로 로드한 후 원하는 작업을 수행합니다.
 			// 예를 들어, UI에 텍스처를 표시하거나 다른 객체에 할당할 수 있습니다.
-			USceneComponent* parent = Cast<USceneComponent>(GetDefaultSubobjectByName(TEXT("OneSided")));
-			TArray<USceneComponent*> panels;
-			parent->GetChildrenComponents(true, panels);
-			UStaticMeshComponent* panel_mesh = Cast<UStaticMeshComponent>(panels[0]);
-			if (!panel_mesh) return;
-
-			UMaterialInterface* material = panel_mesh->GetMaterial(0);
+			UMaterialInterface* material = target_panel->GetMaterial(0);
 			if (!material) return;
 
 			UMaterialInstanceDynamic* dynamic_mat = Cast<UMaterialInstanceDynamic>(material);

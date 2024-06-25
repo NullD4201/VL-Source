@@ -97,7 +97,7 @@ void UImportFiles::OpenFIleDialogueAndUploadImage(FString ImageName)
 
 			if (FFileHelper::LoadFileToArray(ImageData, *SelectedImagePath))
 			{
-				// HTTP ¿äÃ» »ý¼º
+				// HTTP ï¿½ï¿½Ã» ï¿½ï¿½ï¿½ï¿½
 				TSharedRef<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
 				HttpRequest->SetVerb("POST");
 				HttpRequest->SetURL("http://localhost:8000");
@@ -105,7 +105,7 @@ void UImportFiles::OpenFIleDialogueAndUploadImage(FString ImageName)
 				HttpRequest->SetHeader(TEXT("Image-Name"), ImageName);
 				HttpRequest->SetContent(ImageData);
 
-				// ¿äÃ» º¸³»±â
+				// ï¿½ï¿½Ã» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				HttpRequest->ProcessRequest();
 			}
 		}
@@ -158,7 +158,7 @@ UTexture2D* UImportFiles::CreateTextureFromBytes(const TArray<uint8>& ImageData,
 UTexture2D* UImportFiles::LoadTextureFromBytes(const TArray<uint8>& ImageData)
 {
 	IImageWrapperModule& ImageWrapperModule = FModuleManager::LoadModuleChecked<IImageWrapperModule>(FName("ImageWrapper"));
-	TSharedPtr<IImageWrapper> ImageWrapper = ImageWrapperModule.CreateImageWrapper(EImageFormat::PNG);  // ÀÌ¹ÌÁö Æ÷¸Ë¿¡ ¸Â°Ô ¼öÁ¤
+	TSharedPtr<IImageWrapper> ImageWrapper = ImageWrapperModule.CreateImageWrapper(EImageFormat::PNG);  // ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ë¿ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	if (ImageWrapper.IsValid() && ImageWrapper->SetCompressed(ImageData.GetData(), ImageData.Num()))
 	{

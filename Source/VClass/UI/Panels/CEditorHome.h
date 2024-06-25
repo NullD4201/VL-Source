@@ -6,6 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
+#include "Components/EditableText.h"
+#include "Components/ScrollBox.h"
+#include "VClass/UI/Item/MediaListItem.h"
 #include "CEditorHome.generated.h"
 
 /**
@@ -20,6 +23,23 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UCanvasPanel* PanelNewMedia;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonAddMedia;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UScrollBox* MediaListScrollBox;
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UCanvasPanel* PanelMediaAdd;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMediaUpload;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UEditableText* EditableTextMediaName;
+
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UCanvasPanel* PanelAlignObject;
 
@@ -71,6 +91,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UButton* ButtonAlign6;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UMediaListItem> MediaBlockClass;
+
 public:
 	virtual void NativeConstruct() override;
 
@@ -82,4 +105,10 @@ public:
 	
 	UFUNCTION()
 	void SetPanelToShadowSetting();
+
+	UFUNCTION()
+	void PopMediaUploadPanel();
+
+	UFUNCTION()
+	void UploadMedia();
 };

@@ -16,4 +16,16 @@ class VCLASS_API AMainMenuGameMode : public AGameModeBase
 
 public:
 	AMainMenuGameMode();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString StageServerIPAddress = "127.0.0.1";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 StageServerPort = 7777;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ImageServerIPAddress = "127.0.0.1";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ImageServerPort = 8000;
 };

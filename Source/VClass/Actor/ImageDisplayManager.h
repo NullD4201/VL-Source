@@ -57,10 +57,10 @@ public:
 	static FString ImageAppearModeToString(ImageAppearMode mode);
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
-	void ServerDisplayImage(ImageAppearMode Mode, int Index);
+	void ServerDisplayImage(ImageAppearMode Mode, int Index, const FString& ImageName);
 
 	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
-	void ClientDisplayImage(ImageAppearMode Mode, int Index);
+	void ClientDisplayImage(ImageAppearMode Mode, int Index, const FString& ImageName);
 	
 	UFUNCTION(BlueprintCallable)
 	void SendImageToServer(const TArray<uint8>& ImageData);
@@ -69,4 +69,7 @@ public:
 	void GetImageFromServer(FString ImageName);
 
 	void HandleImageReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bSuccess);
+
+private:
+	UStaticMeshComponent* target_panel;
 };

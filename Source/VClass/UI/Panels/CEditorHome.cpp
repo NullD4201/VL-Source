@@ -3,12 +3,22 @@
 
 #include "CEditorHome.h"
 
+#include "VClass/ImportFiles.h"
+#include "VClass/UI/Item/MediaListItem.h"
+
 
 void UCEditorHome::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 	PanelNewMedia = Cast<UCanvasPanel>(GetWidgetFromName("NewMediaPanel"));
+	ButtonAddMedia = Cast<UButton>(GetWidgetFromName("AddMedia"));
+	MediaListScrollBox = Cast<UScrollBox>(GetWidgetFromName("MediaListScrollBox"));
+
+	PanelMediaAdd = Cast<UCanvasPanel>(GetWidgetFromName("MediaUploadPopup"));
+	EditableTextMediaName = Cast<UEditableText>(GetWidgetFromName("MediaNameEditableText"));
+	ButtonMediaUpload = Cast<UButton>(GetWidgetFromName("MediaUpload"));
+
 	PanelAlignObject = Cast<UCanvasPanel>(GetWidgetFromName("AlignObjectPanel"));
 	PanelShadowSetting = Cast<UCanvasPanel>(GetWidgetFromName("ShadowSettingPanel"));
 
@@ -34,6 +44,10 @@ void UCEditorHome::NativeConstruct()
 	ButtonNewMedia->OnClicked.AddDynamic(this, &UCEditorHome::SetPanelToNewMedia);
 	ButtonAlignObjects->OnClicked.AddDynamic(this, &UCEditorHome::SetPanelToAlignObject);
 	ButtonSetShadow->OnClicked.AddDynamic(this, &UCEditorHome::SetPanelToShadowSetting);
+	
+	ButtonAddMedia->OnClicked.AddDynamic(this, &UCEditorHome::PopMediaUploadPanel);
+
+	ButtonMediaUpload->OnClicked.AddDynamic(this, &UCEditorHome::UploadMedia);
 }
 
 void UCEditorHome::SetPanelToNewMedia()
@@ -55,4 +69,25 @@ void UCEditorHome::SetPanelToShadowSetting()
 	PanelNewMedia->SetVisibility(ESlateVisibility::Hidden);
 	PanelAlignObject->SetVisibility(ESlateVisibility::Hidden);
 	PanelShadowSetting->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UCEditorHome::PopMediaUploadPanel()
+{
+	PanelMediaAdd->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UCEditorHome::UploadMedia()
+{
+	FText MediaName = EditableTextMediaName->GetText();
+	if(!MediaName.IsEmpty())
+	{
+		UImportFiles::OpenFIleDialogueAndUploadImage(MediaName.ToString());
+		UMediaListItem* NewItem = CreateWidget<UMediaListItem>(this, MediaBlockClass.Get());
+		if(NewItem)
+		{
+			NewItem->SetName(MediaName.ToString());
+			MediaListScrollBox->AddChild(NewItem);
+		}
+		PanelMediaAdd->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
