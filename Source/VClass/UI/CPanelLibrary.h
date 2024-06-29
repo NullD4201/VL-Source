@@ -18,7 +18,23 @@ class VCLASS_API UCPanelLibrary : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UImage* AccountBackgroundImage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* TextureBackground;
+
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonHome;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonContents;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonBrowse;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UImage* Image3DPreview;
 
@@ -35,8 +51,20 @@ public:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UCanvasPanel* PanelCurrent;
+	UUserWidget* PanelCurrent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UCanvasPanel* PanelEdit;
+	UUserWidget* PanelEdit;
+
+	UFUNCTION()
+	void SetViewToHome();
+
+	UFUNCTION()
+	void SetViewToMyContents();
+	
+	UFUNCTION()
+	void SetViewToContents();
+	
+	UFUNCTION()
+	void SetViewToBrowse();
 };

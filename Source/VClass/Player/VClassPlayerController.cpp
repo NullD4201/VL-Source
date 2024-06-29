@@ -108,6 +108,11 @@ void AVClassPlayerController::OnInteract(const FInputActionValue& InputActionVal
 	InteractionDelegate.Execute(InputActionValue);
 }
 
+void AVClassPlayerController::CallLiveLoadingScreen()
+{
+	
+}
+
 void AVClassPlayerController::ServerSendHostRequest_Implementation(HostRequest request) {
 	int32 id = PlayerState->GetPlayerId();
 

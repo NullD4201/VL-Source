@@ -6,13 +6,13 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
-#include "CPanelHome.generated.h"
+#include "CPanelBrowse.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class VCLASS_API UCPanelHome : public UUserWidget
+class VCLASS_API UCPanelBrowse : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -27,38 +27,20 @@ protected:
 	UButton* ButtonContents;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonBrowse;
+	UCanvasPanel* PanelVolumeBrowser;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonPrev;
-	
+	UCanvasPanel* PanelGraphicsBrowser;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonLeft;
-	
+	UButton* ButtonBrowseGraphics;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonRight;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonNext;
+	UButton* ButtonBrowseVolume;
 
 public:
 	virtual void NativeConstruct() override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UCanvasPanel* PanelLibraryMyContents;
 	
-	UFUNCTION()
-	void PrevClick();
-	
-	UFUNCTION()
-	void LeftClick();
-	
-	UFUNCTION()
-	void RightClick();
-	
-	UFUNCTION()
-	void NextClick();
-
 	UFUNCTION()
 	void SetViewToHome();
 	
@@ -69,6 +51,8 @@ public:
 	void SetViewToContents();
 	
 	UFUNCTION()
-	void SetViewToBrowse();
+	void BrowseVolume();
 	
+	UFUNCTION()
+	void BrowseGraphics();
 };

@@ -3,6 +3,9 @@
 
 #include "CPanelLibraryEditAccount.h"
 
+#include "Components/CanvasPanel.h"
+#include "VClass/UI/CPanelLibrary.h"
+
 
 void UCPanelLibraryEditAccount::NativeConstruct()
 {
@@ -17,4 +20,20 @@ void UCPanelLibraryEditAccount::NativeConstruct()
 	TextBoxMessage = Cast<UEditableTextBox>(GetWidgetFromName("Message"));
 
 	ButtonSubmit = Cast<UButton>(GetWidgetFromName("SubmitButton"));
+
+	ButtonSubmit->OnClicked.AddDynamic(this, &UCPanelLibraryEditAccount::Sumbit);
+}
+
+void UCPanelLibraryEditAccount::Sumbit()
+{
+	this->SetVisibility(ESlateVisibility::Hidden);
+	UCanvasPanel* CanvasPanel = Cast<UCanvasPanel>(this->GetParent());
+	if (CanvasPanel)
+	{
+		UCPanelLibrary* CPanelLibrary = CanvasPanel->GetTypedOuter<UCPanelLibrary>();
+		if (CPanelLibrary)
+		{
+			CPanelLibrary->PanelCurrent->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
 }

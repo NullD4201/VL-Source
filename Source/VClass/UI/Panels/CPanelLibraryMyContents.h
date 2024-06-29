@@ -18,6 +18,15 @@ class VCLASS_API UCPanelLibraryMyContents : public UUserWidget
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonHome;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonContents;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonBrowse;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UImage* Image3DPreview;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -31,4 +40,16 @@ protected:
 
 public:
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void SetViewToHome();
+
+	UFUNCTION()
+	void SetViewToMyAccount();
+	
+	UFUNCTION()
+	void SetViewToContents();
+	
+	UFUNCTION()
+	void SetViewToBrowse();
 };

@@ -6,11 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
-#include "Components/EditableTextBox.h"
-#include "Components/Image.h"
-#include "Components/MultiLineEditableTextBox.h"
-#include "Components/ScrollBox.h"
-#include "Components/TextBlock.h"
+#include "Components/WidgetSwitcher.h"
 #include "HomeUI.generated.h"
 
 /**
@@ -22,18 +18,6 @@ class VCLASS_API UHomeUI : public UUserWidget
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonHome;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonLibrary;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonContents;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* ButtonSettings;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCanvasPanel* PanelHome;
 
@@ -44,21 +28,30 @@ protected:
 	UCanvasPanel* PanelContents;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UCanvasPanel* PanelSettings;
+	UCanvasPanel* PanelBrowse;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UWidgetSwitcher* WidgetSwitcherMain;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UButton* ButtonWindowMin;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UButton* ButtonWindowMax;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UButton* ButtonWindowClose;
 
 public:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	UFUNCTION()
-	void SetViewToHome();
+	void MinimizeWindow();
 	
 	UFUNCTION()
-	void SetViewToLibrary();
+	void MaximizeWindow();
 	
 	UFUNCTION()
-	void SetViewToContents();
-	
-	UFUNCTION()
-	void SetViewToSettings();
+	void CloseWindow();
 };

@@ -6,7 +6,7 @@
 #include "VClass/Player/VClassPlayerController.h"
 
 
-void AIssueActor::Initialize(int32 hostIdentifier, int32 playerIdentifier)
+void AIssueActor::Initialize()
 {
 	this->HostIdentifier = HostIdentifier;
 	this->PlayerIdentifier = PlayerIdentifier;

@@ -41,4 +41,7 @@ protected:
 
 public:
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void Sumbit();
 };

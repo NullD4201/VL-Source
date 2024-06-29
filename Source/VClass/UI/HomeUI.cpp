@@ -10,13 +10,20 @@ void UHomeUI::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	ButtonHome = Cast<UButton>(GetWidgetFromName("Home"));
-	ButtonLibrary = Cast<UButton>(GetWidgetFromName("Library"));
-	ButtonContents = Cast<UButton>(GetWidgetFromName("Contents"));
-	ButtonSettings = Cast<UButton>(GetWidgetFromName("Settings"));
-
 	PanelHome = Cast<UCanvasPanel>(GetWidgetFromName("HomePanel"));
 	PanelLibrary = Cast<UCanvasPanel>(GetWidgetFromName("LibraryPanel"));
+	PanelContents = Cast<UCanvasPanel>(GetWidgetFromName("MyContentsLibraryPanel"));
+
+	WidgetSwitcherMain = Cast<UWidgetSwitcher>(GetWidgetFromName("MainWidgetSwitcher"));
+
+	ButtonWindowMin = Cast<UButton>(GetWidgetFromName("WindowMin"));
+	ButtonWindowMax = Cast<UButton>(GetWidgetFromName("WindowMax"));
+	ButtonWindowClose = Cast<UButton>(GetWidgetFromName("Close"));
+
+
+	ButtonWindowMin->OnClicked.AddDynamic(this, &UHomeUI::MinimizeWindow);
+	ButtonWindowMax->OnClicked.AddDynamic(this, &UHomeUI::MaximizeWindow);
+	ButtonWindowClose->OnClicked.AddDynamic(this, &UHomeUI::CloseWindow);
 }
 
 void UHomeUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -24,18 +31,15 @@ void UHomeUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	Super::NativeTick(MyGeometry, InDeltaTime);
 }
 
-void UHomeUI::SetViewToHome()
+void UHomeUI::MinimizeWindow()
 {
 }
 
-void UHomeUI::SetViewToLibrary()
+void UHomeUI::MaximizeWindow()
 {
 }
 
-void UHomeUI::SetViewToContents()
+void UHomeUI::CloseWindow()
 {
-}
-
-void UHomeUI::SetViewToSettings()
-{
+	
 }

@@ -75,4 +75,6 @@ protected:
 	void OnMove(const FInputActionValue& InputActionValue);
 	void OnLook(const FInputActionValue& InputActionValue);
 	void OnInteract(const FInputActionValue& InputActionValue);
+
+	void CallLiveLoadingScreen();
 };

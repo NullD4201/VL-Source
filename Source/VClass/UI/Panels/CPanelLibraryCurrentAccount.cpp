@@ -1,11 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "CPanelLibraryCurrentAccount.h"
 
+#include "CPanelLibraryEditAccount.h"
 #include "../CPanelLibrary.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/CanvasPanel.h"
-
 
 void UCPanelLibraryCurrentAccount::NativeConstruct()
 {
@@ -28,5 +26,13 @@ void UCPanelLibraryCurrentAccount::NativeConstruct()
 void UCPanelLibraryCurrentAccount::EditProfile()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
-	Cast<UCPanelLibrary>(this->GetParent())->PanelEdit->SetVisibility(ESlateVisibility::Visible);
+	UCanvasPanel* CanvasPanel = Cast<UCanvasPanel>(this->GetParent());
+	if (CanvasPanel)
+	{
+		UCPanelLibrary* CPanelLibrary = CanvasPanel->GetTypedOuter<UCPanelLibrary>();
+		if (CPanelLibrary)
+		{
+			CPanelLibrary->PanelEdit->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
 }
