@@ -9,6 +9,8 @@
 #include <VClass/Actor/VLChair.h>
 #include <VClass/Actor/VLChairManagerSubsystem.h>
 
+#include "VClass/Actor/ImageDisplayManager.h"
+
 
 AVClassGameMode::AVClassGameMode()
 {
@@ -70,6 +72,16 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
     if (player->bIsHost) {
         APawn* pawn = GetWorld()->SpawnActor<APawn>(HostPawn, playerStart->GetTransform(), SpawnParams);
         player->Possess(pawn);
+
+        FString ImageAppearModeStr = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("ImageAppearMode"));
+        if(!ImageAppearModeStr.IsEmpty())
+        {
+            ImageAppearMode Mode = static_cast<ImageAppearMode>(FCString::Atoi(*ImageAppearModeStr));
+            UE_LOG(VClass, Warning, TEXT("%s"), *AImageDisplayManager::ImageAppearModeToString(Mode));
+            TActorIterator<AImageDisplayManager> ImageDisplayActors(GetWorld());
+            AImageDisplayManager* ImageDisplayActor = *ImageDisplayActors;
+            ImageDisplayActor->CurrentMode = Mode;
+        }
     }
     else {
         APawn* pawn = GetWorld()->SpawnActor<APawn>(ClientPawn, playerStart->GetTransform(), SpawnParams);
@@ -91,7 +103,6 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
             }
         }
     }
-
     OnClientLogin.Broadcast(player);
 }
 

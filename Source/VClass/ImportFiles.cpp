@@ -73,7 +73,7 @@ UTexture2D* UImportFiles::OpenFIleDialogueAndLoadImage()
 	return nullptr;
 }
 
-void UImportFiles::OpenFIleDialogueAndUploadImage(FString ImageName)
+void UImportFiles::OpenFileDialogueAndUploadImage(FString ImageName, FString Url)
 {
 	IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
 
@@ -97,7 +97,6 @@ void UImportFiles::OpenFIleDialogueAndUploadImage(FString ImageName)
 
 			if (FFileHelper::LoadFileToArray(ImageData, *SelectedImagePath))
 			{
-				// HTTP ��û ����
 				TSharedRef<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
 				HttpRequest->SetVerb("POST");
 				HttpRequest->SetURL("http://localhost:8000");
@@ -105,7 +104,6 @@ void UImportFiles::OpenFIleDialogueAndUploadImage(FString ImageName)
 				HttpRequest->SetHeader(TEXT("Image-Name"), ImageName);
 				HttpRequest->SetContent(ImageData);
 
-				// ��û ������
 				HttpRequest->ProcessRequest();
 			}
 		}

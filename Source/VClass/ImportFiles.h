@@ -19,7 +19,7 @@ public:
 	static UTexture2D* OpenFIleDialogueAndLoadImage();	
 
 	UFUNCTION(BlueprintCallable)
-	static void OpenFIleDialogueAndUploadImage(FString ImageName);
+	static void OpenFileDialogueAndUploadImage(FString ImageName, FString Url);
 
 	UFUNCTION(BlueprintCallable)
 	static UTexture2D* CreateTextureFromBytes(const TArray<uint8>& ImageData, int32 Width, int32 Height, EPixelFormat PixelFormat, bool bSRGB);

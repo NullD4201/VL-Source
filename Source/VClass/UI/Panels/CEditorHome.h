@@ -111,4 +111,21 @@ public:
 
 	UFUNCTION()
 	void UploadMedia();
+
+	UFUNCTION()
+	void SetImageAppearModeToOneSided();
+	UFUNCTION()
+	void SetImageAppearModeToTwoSided();
+	UFUNCTION()
+	void SetImageAppearModeToTriple();
+	UFUNCTION()
+	void SetImageAppearModeToOneSidedLong();
+	UFUNCTION()
+	void SetImageAppearModeToFrontWide();
+	UFUNCTION()
+	void SetImageAppearModeToBackwardFull();
+
+private:
+	UPROPERTY()
+	UButton* ActivatedImageButtonMode;
 };

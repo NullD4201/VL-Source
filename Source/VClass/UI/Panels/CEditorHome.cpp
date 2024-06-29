@@ -3,7 +3,11 @@
 
 #include "CEditorHome.h"
 
+#include <string>
+
 #include "VClass/ImportFiles.h"
+#include "VClass/Data/VClassSaveGame.h"
+#include "VClass/Player/MainMenuGameMode.h"
 #include "VClass/UI/Item/MediaListItem.h"
 
 
@@ -44,6 +48,13 @@ void UCEditorHome::NativeConstruct()
 	ButtonNewMedia->OnClicked.AddDynamic(this, &UCEditorHome::SetPanelToNewMedia);
 	ButtonAlignObjects->OnClicked.AddDynamic(this, &UCEditorHome::SetPanelToAlignObject);
 	ButtonSetShadow->OnClicked.AddDynamic(this, &UCEditorHome::SetPanelToShadowSetting);
+
+	ButtonAlign1->OnClicked.AddDynamic(this, &UCEditorHome::SetImageAppearModeToTwoSided);
+	ButtonAlign2->OnClicked.AddDynamic(this, &UCEditorHome::SetImageAppearModeToOneSided);
+	ButtonAlign3->OnClicked.AddDynamic(this, &UCEditorHome::SetImageAppearModeToTriple);
+	ButtonAlign4->OnClicked.AddDynamic(this, &UCEditorHome::SetImageAppearModeToOneSidedLong);
+	ButtonAlign5->OnClicked.AddDynamic(this, &UCEditorHome::SetImageAppearModeToFrontWide);
+	ButtonAlign6->OnClicked.AddDynamic(this, &UCEditorHome::SetImageAppearModeToBackwardFull);
 	
 	ButtonAddMedia->OnClicked.AddDynamic(this, &UCEditorHome::PopMediaUploadPanel);
 
@@ -79,9 +90,13 @@ void UCEditorHome::PopMediaUploadPanel()
 void UCEditorHome::UploadMedia()
 {
 	FText MediaName = EditableTextMediaName->GetText();
-	if(!MediaName.IsEmpty())
+	
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
+	
+	if(!MediaName.IsEmpty() && !SaveGame->UploadMediaList.Contains(MediaName.ToString()))
 	{
-		UImportFiles::OpenFIleDialogueAndUploadImage(MediaName.ToString());
+		AMainMenuGameMode* gamemode = Cast<AMainMenuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+		UImportFiles::OpenFileDialogueAndUploadImage(MediaName.ToString(), "http://"+gamemode->ImageServerIPAddress+":"+FString::FromInt(gamemode->ImageServerPort));
 		UMediaListItem* NewItem = CreateWidget<UMediaListItem>(this, MediaBlockClass.Get());
 		if(NewItem)
 		{
@@ -89,5 +104,129 @@ void UCEditorHome::UploadMedia()
 			MediaListScrollBox->AddChild(NewItem);
 		}
 		PanelMediaAdd->SetVisibility(ESlateVisibility::Hidden);
+		SaveGame->UploadMediaList.Add(MediaName.ToString());
+		UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"),0);
 	}
 }
+
+void UCEditorHome::SetImageAppearModeToTwoSided()
+{
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot("Main",0));
+	if(SaveGame)
+	{
+		SaveGame->ImageMode = ImageAppearMode::IAM_TWOSIDED;
+
+		FButtonStyle style = ButtonAlign1->GetStyle();
+		style.Normal = style.Hovered;
+		ButtonAlign1->SetStyle(style);
+		
+		if(ActivatedImageButtonMode)
+		{
+			style = ActivatedImageButtonMode->GetStyle();
+			style.Normal = style.Disabled;
+			ActivatedImageButtonMode->SetStyle(style);
+		}
+		ActivatedImageButtonMode = ButtonAlign1;
+	}
+}
+void UCEditorHome::SetImageAppearModeToOneSided()
+{
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot("Main",0));
+	if(SaveGame)
+	{
+		SaveGame->ImageMode = ImageAppearMode::IAM_ONESIDED;
+		
+		FButtonStyle style = ButtonAlign2->GetStyle();
+		style.Normal = style.Hovered;
+		ButtonAlign2->SetStyle(style);
+
+		if(ActivatedImageButtonMode)
+		{
+			style = ActivatedImageButtonMode->GetStyle();
+			style.Normal = style.Disabled;
+			ActivatedImageButtonMode->SetStyle(style);
+		}
+		ActivatedImageButtonMode = ButtonAlign2;
+	}
+}
+void UCEditorHome::SetImageAppearModeToTriple()
+{
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot("Main",0));
+	if(SaveGame)
+	{
+		SaveGame->ImageMode = ImageAppearMode::IAM_TRIPLE;
+
+		FButtonStyle style = ButtonAlign3->GetStyle();
+		style.Normal = style.Hovered;
+		ButtonAlign3->SetStyle(style);
+
+		if(ActivatedImageButtonMode)
+		{
+			style = ActivatedImageButtonMode->GetStyle();
+			style.Normal = style.Disabled;
+			ActivatedImageButtonMode->SetStyle(style);
+		}
+		ActivatedImageButtonMode = ButtonAlign3;
+	}
+}
+void UCEditorHome::SetImageAppearModeToOneSidedLong()
+{
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot("Main",0));
+	if(SaveGame)
+	{
+		SaveGame->ImageMode = ImageAppearMode::IAM_ONESIDED_LONG;
+		
+		FButtonStyle style = ButtonAlign4->GetStyle();
+		style.Normal = style.Hovered;
+		ButtonAlign4->SetStyle(style);
+
+		if(ActivatedImageButtonMode)
+		{
+			style = ActivatedImageButtonMode->GetStyle();
+			style.Normal = style.Disabled;
+			ActivatedImageButtonMode->SetStyle(style);
+		}
+		ActivatedImageButtonMode = ButtonAlign4;
+	}
+}
+void UCEditorHome::SetImageAppearModeToFrontWide()
+{
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot("Main",0));
+	if(SaveGame)
+	{
+		SaveGame->ImageMode = ImageAppearMode::IAM_FRONT_WIDE;
+		
+		FButtonStyle style = ButtonAlign5->GetStyle();
+		style.Normal = style.Hovered;
+		ButtonAlign5->SetStyle(style);
+
+		if(ActivatedImageButtonMode)
+		{
+			style = ActivatedImageButtonMode->GetStyle();
+			style.Normal = style.Disabled;
+			ActivatedImageButtonMode->SetStyle(style);
+		}
+		ActivatedImageButtonMode = ButtonAlign5;
+	}
+}
+void UCEditorHome::SetImageAppearModeToBackwardFull()
+{
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot("Main",0));
+	if(SaveGame)
+	{
+		SaveGame->ImageMode = ImageAppearMode::IAM_BACKWARD_FULL;
+
+		FButtonStyle style = ButtonAlign6->GetStyle();
+		style.Normal = style.Hovered;
+		ButtonAlign6->SetStyle(style);
+
+		if(ActivatedImageButtonMode)
+		{
+			style = ActivatedImageButtonMode->GetStyle();
+			style.Normal = style.Disabled;
+			ActivatedImageButtonMode->SetStyle(style);
+		}
+		ActivatedImageButtonMode = ButtonAlign6;
+	}
+}
+

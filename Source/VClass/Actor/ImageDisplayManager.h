@@ -12,12 +12,13 @@
 
 UENUM(BlueprintType)
 enum class ImageAppearMode : uint8 {
-	IAM_TWOSIDED UMETA(DisplayName = "Two Sided Appearance"),
-	IAM_ONESIDED UMETA(DisplayName = "One Sided Appearance"),
-	IAM_TRIPLE UMETA(DisplayName = "Triple Appearance"),
-	IAM_ONESIDED_LONG UMETA(DisplayName = "One Sided with Long Panel"),
-	IAM_FRONT_WIDE UMETA(DisplayName = "Front Appearance with Wide Panel"),
-	IAM_BACKWARD_FULL UMETA(DisplayName = "Backward Appearance with Full Panel")
+	IAM_NOTSET = 0 UMETA(DisplayName = "Not Set"),
+	IAM_TWOSIDED = 1 UMETA(DisplayName = "Two Sided Appearance"),
+	IAM_ONESIDED = 2 UMETA(DisplayName = "One Sided Appearance"),
+	IAM_TRIPLE = 3 UMETA(DisplayName = "Triple Appearance"),
+	IAM_ONESIDED_LONG = 4 UMETA(DisplayName = "One Sided with Long Panel"),
+	IAM_FRONT_WIDE = 5 UMETA(DisplayName = "Front Appearance with Wide Panel"),
+	IAM_BACKWARD_FULL = 6 UMETA(DisplayName = "Backward Appearance with Full Panel")
 };
 
 
@@ -35,7 +36,7 @@ public:
 	FString ImageServerURL = "http://localhost:8000";
 
 	UPROPERTY(VisibleAnywhere, Replicated, ReplicatedUsing=OnRep_CurrentMode)
-	ImageAppearMode CurrentMode;
+	ImageAppearMode CurrentMode = ImageAppearMode::IAM_NOTSET;
 
 	UFUNCTION()
 	void OnClientLogin(AVClassPlayerController* player);

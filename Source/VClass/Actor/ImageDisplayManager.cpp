@@ -9,13 +9,13 @@
 FString AImageDisplayManager::ImageAppearModeToString(ImageAppearMode mode) {
 	FString result;
 	switch (mode) {
-	case ImageAppearMode::IAM_ONESIDED: result = TEXT("OneSided");
-	case ImageAppearMode::IAM_TWOSIDED: result = TEXT("TwoSided");
-	case ImageAppearMode::IAM_TRIPLE:	result = TEXT("Triple");
-	case ImageAppearMode::IAM_ONESIDED_LONG:	result = TEXT("OneSidedLong");
-	case ImageAppearMode::IAM_BACKWARD_FULL:	result = TEXT("BackwardFull");
-	case ImageAppearMode::IAM_FRONT_WIDE:	result = TEXT("FrontWide");
-	default: nullptr;
+	case ImageAppearMode::IAM_ONESIDED: result = TEXT("OneSided"); break;
+	case ImageAppearMode::IAM_TWOSIDED: result = TEXT("TwoSided"); break;
+	case ImageAppearMode::IAM_TRIPLE:	result = TEXT("Triple"); break;
+	case ImageAppearMode::IAM_ONESIDED_LONG:	result = TEXT("OneSidedLong"); break;
+	case ImageAppearMode::IAM_BACKWARD_FULL:	result = TEXT("BackwardFull"); break;
+	case ImageAppearMode::IAM_FRONT_WIDE:	result = TEXT("FrontWide"); break;
+	default: break;
 	}
 	return result;
 }
@@ -51,6 +51,7 @@ void AImageDisplayManager::BeginPlay()
 			if (!dynamic_mat) continue;
 
 			comp->SetMaterial(0,dynamic_mat);
+			comp->SetVisibility(false);
 		}
 	}
 }
@@ -69,7 +70,17 @@ void AImageDisplayManager::GetLifetimeReplicatedProps(TArray< FLifetimeProperty 
 }
 
 void AImageDisplayManager::OnRep_CurrentMode() {
-
+	FString ModeStr = ImageAppearModeToString(CurrentMode);
+	USceneComponent* parent = Cast<USceneComponent>(GetDefaultSubobjectByName(*ModeStr));
+	if(parent)
+	{
+		TArray<USceneComponent*> panels;
+		parent->GetChildrenComponents(true, panels);
+		for(USceneComponent* panel : panels)
+		{
+			panel->SetVisibility(true);
+		}
+	}
 }
 
 void AImageDisplayManager::OnClientLogin(AVClassPlayerController* player) {

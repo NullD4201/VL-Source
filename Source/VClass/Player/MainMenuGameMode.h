@@ -16,6 +16,8 @@ class VCLASS_API AMainMenuGameMode : public AGameModeBase
 
 public:
 	AMainMenuGameMode();
+	
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString StageServerIPAddress = "127.0.0.1";
