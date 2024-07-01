@@ -60,7 +60,7 @@ private:
 		{5.44752690e-02,-9.06564535e-03,-3.11413974e-02,-2.46259348e-02,1.03577086e-02} 
 	};
 
-	TArray<FString> categories = { "Thumbs_up","open_hands","pointing","rock","v_sign" };
+	TArray<FString> categories = { "thumbs_up","open_hands","pointing","rock","v_sign" };
 
 	float** MatrixM2D(float** A, int* A_Shape, float** B, int* B_Shape, bool& bOutSuccessful);
 };

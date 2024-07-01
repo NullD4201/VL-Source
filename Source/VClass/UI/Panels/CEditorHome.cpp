@@ -90,7 +90,7 @@ void UCEditorHome::PopMediaUploadPanel()
 void UCEditorHome::UploadMedia()
 {
 	FText MediaName = EditableTextMediaName->GetText();
-	
+
 	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
 	
 	if(!MediaName.IsEmpty() && !SaveGame->UploadMediaList.Contains(MediaName.ToString()))
@@ -105,6 +105,11 @@ void UCEditorHome::UploadMedia()
 		}
 		PanelMediaAdd->SetVisibility(ESlateVisibility::Hidden);
 		SaveGame->UploadMediaList.Add(MediaName.ToString());
+		for(FString s : SaveGame->UploadMediaList)
+		{
+			UE_LOG(VClass, Warning, TEXT("%s"), *s);
+		}
+		UE_LOG(VClass, Warning, TEXT("%d"), SaveGame->UploadMediaList.Num());
 		UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"),0);
 	}
 }

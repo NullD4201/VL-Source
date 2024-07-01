@@ -12,8 +12,6 @@ AMainMenuGameMode::AMainMenuGameMode()
 	DefaultPawnClass = nullptr;
 	HUDClass = nullptr;
 	PlayerControllerClass = AMainMenuPlayerController::StaticClass();
-	GameStateClass = nullptr;
-	PlayerStateClass = nullptr;
 	SpectatorClass = nullptr;
 }
 
@@ -22,7 +20,10 @@ void AMainMenuGameMode::BeginPlay()
 	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::CreateSaveGameObject(UVClassSaveGame::StaticClass()));
 	if(SaveGame)
 	{
-		UGameplayStatics::SaveGameToSlot(SaveGame,TEXT("Main"),0);
+		if(UGameplayStatics::SaveGameToSlot(SaveGame,TEXT("Main"),0))
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Save Game Successfully!"));
+		}
 	}
 }
 

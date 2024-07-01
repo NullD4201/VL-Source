@@ -15,6 +15,12 @@ AVClassPlayerController::AVClassPlayerController()
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 
+	ConstructorHelpers::FClassFinder<UCPanelLiveHost> HOST_PANEL_C(TEXT("/Game/Blueprints/UI/Panels/LiveHostPanel.LiveHostPanel_C"));
+	if(HOST_PANEL_C.Succeeded())
+	{
+		HostPanelClass = HOST_PANEL_C.Class;
+	}
+
 	GestureRecognitor = CreateDefaultSubobject<UVClassGestureRecognitor>(TEXT("GESTURE_RECOGNITOR"));
 }
 
@@ -39,7 +45,6 @@ void AVClassPlayerController::BeginPlay()
 		const UInputDataConfig* InputDataConfig = GetDefault<UInputDataConfig>();
 		Subsystem->AddMappingContext(InputDataConfig->DefaultContext, 0);
 	}
-	
 }
 
 void AVClassPlayerController::SetupInputComponent()
@@ -98,9 +103,11 @@ void AVClassPlayerController::OnMove(const FInputActionValue& InputActionValue)
 void AVClassPlayerController::OnLook(const FInputActionValue& InputActionValue)
 {
 	FVector2D value = InputActionValue.Get<FVector2D>();
-
-	AddPitchInput(value.Y);
-	AddYawInput(value.X);
+	if(!bShowMouseCursor)
+	{
+		AddPitchInput(value.Y);
+		AddYawInput(value.X);
+	}
 }
 
 void AVClassPlayerController::OnInteract(const FInputActionValue& InputActionValue)
@@ -163,6 +170,19 @@ void AVClassPlayerController::ClientGetClientRequest_Implementation(ClientReques
 		break;
 	case ClientRequest::QUESTION_INVAILD:
 		UUniversalVoiceChat::VoiceChatStopSpeak();
+		break;
+	case ClientRequest::UISETTING_HOST:
+		if(HostPanelClass)
+		{
+			HostPanel = Cast<UCPanelLiveHost>(CreateWidget(this,HostPanelClass));
+			if(!HostPanel)
+			{
+				UE_LOG(VClass, Error, TEXT("Can't generate HostPanel UI! Are you sure at UI Blueprint's path?"));
+				return;
+			}
+			HostPanel->Init();
+			HostPanel->AddToViewport();
+		}
 		break;
 	default:
 		break;

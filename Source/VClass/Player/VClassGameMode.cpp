@@ -57,6 +57,10 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
     player->bIsHost = isHost == TEXT("true") ? true : false;
 
     player->info.Key = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("Key"));
+    player->info.isHost = TEXT("true") ? true : false;
+
+    if(player->info.isHost) player->ClientGetClientRequest(ClientRequest::UISETTING_HOST);
+    else player->ClientGetClientRequest(ClientRequest::UISETTING_CLIENT);
 
     UE_LOG(LogTemp, Warning, TEXT("bIsHost set %s"), player->bIsHost ? TEXT("true") : TEXT("false"));
 

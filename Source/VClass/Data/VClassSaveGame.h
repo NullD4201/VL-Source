@@ -16,7 +16,9 @@ class VCLASS_API UVClassSaveGame : public USaveGame
 	GENERATED_BODY()
 	
 public:
-	TArray<FString> UploadMediaList;
+	UPROPERTY()
+	TArray<FString> UploadMediaList = TArray<FString>();
 
+	UPROPERTY()
 	ImageAppearMode ImageMode;
 };

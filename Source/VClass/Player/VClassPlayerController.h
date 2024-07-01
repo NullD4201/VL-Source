@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include <VClass/Gesture/VClassGestureRecognitor.h>
 #include <VClass/Player/Structures/PlayerInfo.h>
+
+#include "VClass/UI/Panels/CPanelLiveHost.h"
 #include "VClassPlayerController.generated.h"
 
 DECLARE_DELEGATE_OneParam(FVClassInteractonDelegate, const FInputActionValue&);
@@ -22,7 +24,9 @@ UENUM()
 enum class ClientRequest : uint8 {
 	TEST_REPL,
 	QUESTION_VAILD,
-	QUESTION_INVAILD
+	QUESTION_INVAILD,
+	UISETTING_HOST,
+	UISETTING_CLIENT
 };
 
 UCLASS()
@@ -71,6 +75,10 @@ public:
 	bool bIsHost = false;
 	FString SeatNum;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UCPanelLiveHost* HostPanel;
+	TSubclassOf<class UCPanelLiveHost> HostPanelClass;
+	
 protected:
 	void OnMove(const FInputActionValue& InputActionValue);
 	void OnLook(const FInputActionValue& InputActionValue);
