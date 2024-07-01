@@ -7,6 +7,7 @@
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ScrollBox.h"
+#include "CDisplayImageSocketSelectorPanel.h"
 #include "../Item/MediaLiveItem.h"
 #include "CPanelLiveHost.generated.h"
 
@@ -20,23 +21,26 @@ class VCLASS_API UCPanelLiveHost : public UUserWidget
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Media Socket Selector")
-	TSubclassOf<class UUserWidget> MediaSocketSelector_OneSided;
+	TSubclassOf<class UCDisplayImageSocketSelectorPanel> MediaSocketSelector_OneSided;
 	UPROPERTY(EditAnywhere, Category = "Media Socket Selector")
-	TSubclassOf<class UUserWidget> MediaSocketSelector_TwoSided;
+	TSubclassOf<class UCDisplayImageSocketSelectorPanel> MediaSocketSelector_TwoSided;
 	UPROPERTY(EditAnywhere, Category = "Media Socket Selector")
-	TSubclassOf<class UUserWidget> MediaSocketSelector_Triple;
+	TSubclassOf<class UCDisplayImageSocketSelectorPanel> MediaSocketSelector_Triple;
 	UPROPERTY(EditAnywhere, Category = "Media Socket Selector")
-	TSubclassOf<class UUserWidget> MediaSocketSelector_OneSided_Long;
+	TSubclassOf<class UCDisplayImageSocketSelectorPanel> MediaSocketSelector_OneSided_Long;
 	UPROPERTY(EditAnywhere, Category = "Media Socket Selector")
-	TSubclassOf<class UUserWidget> MediaSocketSelector_Front_Wide;
+	TSubclassOf<class UCDisplayImageSocketSelectorPanel> MediaSocketSelector_Front_Wide;
 	UPROPERTY(EditAnywhere, Category = "Media Socket Selector")
-	TSubclassOf<class UUserWidget> MediaSocketSelector_Backward_Full;
+	TSubclassOf<class UCDisplayImageSocketSelectorPanel> MediaSocketSelector_Backward_Full;
 
 	UPROPERTY(EditAnywhere, Category = "Slide Panel")
 	TSubclassOf<class UMediaLiveItem> MediaListItem;
 	
 
 protected:
+	UPROPERTY()
+	UCanvasPanel* RootPanel;
+	
 	UPROPERTY()
 	UCanvasPanel* MotionPanel;
 	UPROPERTY()
@@ -46,6 +50,9 @@ protected:
 
 	UPROPERTY()
 	UCanvasPanel* SlidePanel;
+
+	UPROPERTY(VisibleAnywhere)
+	UCDisplayImageSocketSelectorPanel* MediaSocketSelector;
 	
 public:
 	virtual void NativeConstruct() override;
@@ -55,6 +62,12 @@ public:
 
 	UFUNCTION()
 	void OpenSlideSettingPanel();
+
+	UFUNCTION()
+	void OpenDisplaySocketSelector(const FString& MediaNameToDisplay);
+
+	UFUNCTION()
+	void ReturnToMainMenu();
 
 	void Init();
 };

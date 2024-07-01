@@ -21,6 +21,7 @@ class ImageHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         image_name = self.path.strip('/')
         image_path = './'+image_name+'.png'
+        print(image_path)
 
         if os.path.exists(image_path):
             try:

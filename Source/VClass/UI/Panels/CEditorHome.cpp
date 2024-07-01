@@ -133,6 +133,7 @@ void UCEditorHome::SetImageAppearModeToTwoSided()
 		}
 		ActivatedImageButtonMode = ButtonAlign1;
 	}
+	UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"), 0);
 }
 void UCEditorHome::SetImageAppearModeToOneSided()
 {
@@ -153,6 +154,7 @@ void UCEditorHome::SetImageAppearModeToOneSided()
 		}
 		ActivatedImageButtonMode = ButtonAlign2;
 	}
+	UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"), 0);
 }
 void UCEditorHome::SetImageAppearModeToTriple()
 {
@@ -173,6 +175,7 @@ void UCEditorHome::SetImageAppearModeToTriple()
 		}
 		ActivatedImageButtonMode = ButtonAlign3;
 	}
+	UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"), 0);
 }
 void UCEditorHome::SetImageAppearModeToOneSidedLong()
 {
@@ -193,6 +196,7 @@ void UCEditorHome::SetImageAppearModeToOneSidedLong()
 		}
 		ActivatedImageButtonMode = ButtonAlign4;
 	}
+	UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"), 0);
 }
 void UCEditorHome::SetImageAppearModeToFrontWide()
 {
@@ -213,6 +217,7 @@ void UCEditorHome::SetImageAppearModeToFrontWide()
 		}
 		ActivatedImageButtonMode = ButtonAlign5;
 	}
+	UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"), 0);
 }
 void UCEditorHome::SetImageAppearModeToBackwardFull()
 {
@@ -233,5 +238,6 @@ void UCEditorHome::SetImageAppearModeToBackwardFull()
 		}
 		ActivatedImageButtonMode = ButtonAlign6;
 	}
+	UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"), 0);
 }
 

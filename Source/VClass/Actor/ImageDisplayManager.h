@@ -22,7 +22,6 @@ enum class ImageAppearMode : uint8 {
 };
 
 
-
 UCLASS()
 class VCLASS_API AImageDisplayManager : public AActor
 {

@@ -99,7 +99,7 @@ void AImageDisplayManager::ClientDisplayImage_Implementation(ImageAppearMode Mod
 	if (parent) {
 		TArray<USceneComponent*> panels;
 		parent->GetChildrenComponents(true, panels);
-		UStaticMeshComponent* panel_mesh = Cast<UStaticMeshComponent>(panels[0]);
+		UStaticMeshComponent* panel_mesh = Cast<UStaticMeshComponent>(panels[Index]);
 		if (panel_mesh) {
 			target_panel = panel_mesh;
 			GetImageFromServer(ImageName);
