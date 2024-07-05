@@ -110,15 +110,15 @@ void AImageDisplayManager::ClientDisplayImage_Implementation(ImageAppearMode Mod
 void AImageDisplayManager::SendImageToServer(const TArray<uint8>& ImageData) {
 	TSharedRef<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("POST");
-	HttpRequest->SetURL("http://localhost:8000"); // ¼­¹öÀÇ ÀÌ¹ÌÁö ¾÷·Îµå API ¿£µåÆ÷ÀÎÆ®
+	HttpRequest->SetURL("http://localhost:8000"); // ì„œë²„ì˜ ì´ë¯¸ì§€ ì—…ë¡œë“œ API ì—”ë“œí¬ì¸íŠ¸
 
-	// HTTP Çì´õ ¼³Á¤ (¿¹½Ã: ÀÌ¹ÌÁö ÆÄÀÏÀÇ MIME Å¸ÀÔ)
+	// HTTP í—¤ë” ì„¤ì • (ì˜ˆì‹œ: ì´ë¯¸ì§€ íŒŒì¼ì˜ MIME íƒ€ìž…)
 	HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("image/jpeg"));
 
-	// ¹ÙÀÌ³Ê¸® µ¥ÀÌÅÍ ¼³Á¤
+	// ë°”ì´ë„ˆë¦¬ ë°ì´í„° ì„¤ì •
 	HttpRequest->SetContent(ImageData);
 
-	// ¿äÃ» º¸³»±â
+	// ìš”ì²­ ë³´ë‚´ê¸°
 	HttpRequest->ProcessRequest();
 }
 
@@ -142,8 +142,8 @@ void AImageDisplayManager::HandleImageReceived(FHttpRequestPtr Request, FHttpRes
 		UTexture2D* Texture = UImportFiles::LoadTextureFromBytes(ImageData);
 		if (Texture)
 		{
-			// ÅØ½ºÃ³¸¦ ¼º°øÀûÀ¸·Î ·ÎµåÇÑ ÈÄ ¿øÇÏ´Â ÀÛ¾÷À» ¼öÇàÇÕ´Ï´Ù.
-			// ¿¹¸¦ µé¾î, UI¿¡ ÅØ½ºÃ³¸¦ Ç¥½ÃÇÏ°Å³ª ´Ù¸¥ °´Ã¼¿¡ ÇÒ´çÇÒ ¼ö ÀÖ½À´Ï´Ù.
+			// í…ìŠ¤ì²˜ë¥¼ ì„±ê³µì ìœ¼ë¡œ ë¡œë“œí•œ í›„ ì›í•˜ëŠ” ìž‘ì—…ì„ ìˆ˜í–‰í•©ë‹ˆë‹¤.
+			// ì˜ˆë¥¼ ë“¤ì–´, UIì— í…ìŠ¤ì²˜ë¥¼ í‘œì‹œí•˜ê±°ë‚˜ ë‹¤ë¥¸ ê°ì²´ì— í• ë‹¹í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 			UMaterialInterface* material = target_panel->GetMaterial(0);
 			if (!material) return;
 

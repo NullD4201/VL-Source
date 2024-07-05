@@ -19,3 +19,18 @@ enum class EPlayerType : uint8
 	Host,
 	None
 };
+
+UENUM(BlueprintType)
+enum class EScreenTransitionType : uint8
+{
+	Normal,
+	Vanish,
+	PullUp,
+	PullDown,
+	PullLeft,
+	PullRight,
+	CoverUp,
+	CoverDown,
+	CoverLeft,
+	CoverRight,
+};
