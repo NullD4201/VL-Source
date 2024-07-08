@@ -12,6 +12,8 @@ AScreenActor::AScreenActor()
 
 	Screen = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Screen"));
 	SetRootComponent(Screen);
+
+	SlideTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("SlideTimeline"));
 }
 
 // Called when the game starts or when spawned
@@ -23,12 +25,14 @@ void AScreenActor::BeginPlay()
 	{
 		FOnTimelineFloat TimelineProgress;
 		TimelineProgress.BindUFunction(this, FName("UpdateMaterial"));
-		SlideTimeline.AddInterpFloat(SlideCurve, TimelineProgress);
+		SlideTimeline->AddInterpFloat(SlideCurve, TimelineProgress);
 		
 		FOnTimelineEvent TimelineFinished;
 		TimelineFinished.BindUFunction(this, FName("OnTransitionFinished"));
-		SlideTimeline.SetTimelineFinishedFunc(TimelineFinished);
+		SlideTimeline->SetTimelineFinishedFunc(TimelineFinished);
 	}
+
+	SlideTimeline->RegisterComponent();
 
     DynamicMaterial = Screen->CreateAndSetMaterialInstanceDynamic(0);
 }
@@ -38,12 +42,23 @@ void AScreenActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	SlideTimeline.TickTimeline(DeltaTime);
+	SlideTimeline->TickComponent(DeltaTime, LEVELTICK_TimeOnly, nullptr);
 }
 
-void AScreenActor::StartSlideTransition(EScreenTransitionType ScreenTransitionType)
+void AScreenActor::StartSlideTransition()
 {
-    SlideTimeline.PlayFromStart();
+	if (SlideTimeline)
+	{
+		SlideTimeline->PlayFromStart();
+	}
+}
+
+void AScreenActor::StartSlideTransitionReverse()
+{
+	if (SlideTimeline)
+	{
+		SlideTimeline->ReverseFromEnd();
+	}
 }
 
 void AScreenActor::UpdateMaterial(float Value)

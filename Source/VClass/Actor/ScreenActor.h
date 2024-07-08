@@ -27,14 +27,19 @@ public:
 	UStaticMeshComponent* Screen;
 
 	UFUNCTION()
-	void StartSlideTransition(EScreenTransitionType ScreenTransitionType);
+	void StartSlideTransition();
+
+	UFUNCTION()
+	void StartSlideTransitionReverse();
 
 private:
 	UMaterialInstanceDynamic* DynamicMaterial;
-	FTimeline SlideTimeline;
 
 	UPROPERTY(EditAnywhere, Category="Timeline")
 	UCurveFloat* SlideCurve;
+
+	UPROPERTY()
+	UTimelineComponent* SlideTimeline;
 
 	UFUNCTION()
 	void UpdateMaterial(float Value);
