@@ -1,50 +1,66 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SlideShowWidget.h"
+#include "SlideShowWidget.h"	
 
-#include "Components/Button.h"
-#include "VClass/Actor/ScreenActor.h"
+void USlideShowWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
 
+	if (bIsDragging)
+	{
+		if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+		{
+			float MouseX, MouseY;
+			PlayerController->GetMousePosition(MouseX, MouseY);
+
+			FVector2D ScreenPosition(MouseX, MouseY);
+			FVector2D WidgetPosition = MyGeometry.AbsoluteToLocal(ScreenPosition);
+
+			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, WidgetPosition.ToString());
+
+			if (_ImageSlideTemp)
+			{
+				_ImageSlideTemp->SetRenderTranslation(WidgetPosition);
+			}
+		}
+	}
+}
 
 void USlideShowWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	TestButton = Cast<UButton>(GetWidgetFromName("Test"));
-	if (TestButton)
+	if (ButtonTestSlide1)
 	{
-		TestButton->OnClicked.AddDynamic(this, &USlideShowWidget::OnTestButtonClick);
-	}
-	TestButton2 = Cast<UButton>(GetWidgetFromName("Test2"));
-	if (TestButton2)
-	{
-		TestButton2->OnClicked.AddDynamic(this, &USlideShowWidget::OnTestButtonClick2);
+		ButtonTestSlide1->OnPressed.AddDynamic(this, &USlideShowWidget::OnButtonPressed);
+		ButtonTestSlide1->OnReleased.AddDynamic(this, &USlideShowWidget::OnButtonReleased);
 	}
 
-	ScreenActor1 = UGameplayStatics::GetActorOfClass(GetWorld(), AScreenActor::StaticClass());
-}
+	bIsDragging = false;
 
-void USlideShowWidget::OnTestButtonClick()
-{
-	if (ScreenActor1)
+	// 입력 매핑 설정
+	if (UWorld* World = GetWorld())
 	{
-		AScreenActor* ScreenActor = Cast<AScreenActor>(ScreenActor1);
-		if (ScreenActor)
+		APlayerController* PlayerController = World->GetFirstPlayerController();
+		if (PlayerController)
 		{
-			ScreenActor->StartSlideTransition();
+			PlayerController->InputComponent->BindAction("MouseLeftClick", IE_Released, this, &USlideShowWidget::OnMouseLeftClick);
 		}
 	}
 }
 
-void USlideShowWidget::OnTestButtonClick2()
+void USlideShowWidget::OnButtonPressed()
 {
-	if (ScreenActor1)
-	{
-		AScreenActor* ScreenActor = Cast<AScreenActor>(ScreenActor1);
-		if (ScreenActor)
-		{
-			ScreenActor->StartSlideTransitionReverse();
-		}
-	}
+	bIsDragging = true;
+}
+
+void USlideShowWidget::OnButtonReleased()
+{
+	bIsDragging = false;
+}
+
+void USlideShowWidget::OnMouseLeftClick()
+{
+	bIsDragging = false;
 }

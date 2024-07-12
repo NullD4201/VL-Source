@@ -5,6 +5,7 @@
 #include "../ProjectInfo.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "SlideShowWidget.generated.h"
 
 /**
@@ -16,20 +17,26 @@ class VCLASS_API USlideShowWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* TestButton;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UButton* TestButton2;
-
+protected:
 	virtual void NativeConstruct() override;
 
-	UFUNCTION()
-	void OnTestButtonClick();
-
-	UFUNCTION()
-	void OnTestButtonClick2();
-
 private:
-	AActor* ScreenActor1;
+	UPROPERTY(meta = (BindWidget))
+	class UButton* ButtonTestSlide1;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* _ImageSlideTemp;
+
+	bool bIsDragging;
+
+	UFUNCTION()
+	void OnButtonPressed();
+
+	UFUNCTION()
+	void OnButtonReleased();
+
+	UFUNCTION()
+	void OnMouseLeftClick();
 };
