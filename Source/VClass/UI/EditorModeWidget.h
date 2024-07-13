@@ -31,6 +31,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UButton* ButtonPeople;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonReturnToHomeScreen;
+
 public:
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void ReturntoHomeScreen();
 };

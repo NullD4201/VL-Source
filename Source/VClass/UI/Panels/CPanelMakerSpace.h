@@ -33,4 +33,7 @@ public:
 
 	UFUNCTION()
 	void OpenLiveContents();
+
+	UFUNCTION()
+	void OpenEditorHome();
 };

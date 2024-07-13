@@ -27,4 +27,7 @@ public:
 
 	UFUNCTION()
 	void ClickOutside();
+
+	UFUNCTION()
+	void ClickButtonProduct();
 };

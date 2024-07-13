@@ -36,3 +36,11 @@ void UCPanelLibraryCurrentAccount::EditProfile()
 		}
 	}
 }
+
+void UCPanelLibraryCurrentAccount::SetProfileName(const FString& NewName, const FString& NewEmail, const FString& message)
+{
+	TextBlockProfileName->SetText(FText::FromString(NewName));
+	TextBlockProfileEmail->SetText(FText::FromString(NewEmail));
+	TextBlockAboutMe->SetText(FText::FromString(message));
+}
+

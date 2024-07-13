@@ -114,10 +114,4 @@ void UMainMenuWidget::OnClickButtonConnect()
 	{
 		UE_LOG(VClass, Type::Error, TEXT("Local Player Controller is not AMainMenuPlayerController."));
 	}
-
-	PlayerController->SetPlayer(mTextBoxAddress->GetText().ToString(),
-								mTextBoxPort->GetText().ToString(),
-								bIsHost,
-								mComboSeatLine->GetSelectedOption(),
-								mComboSeatNumber->GetSelectedOption());
 }

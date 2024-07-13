@@ -4,6 +4,7 @@
 #include "CPanelMakerSpace.h"
 
 #include "Components/WidgetSwitcher.h"
+#include "VClass/Player/MainMenuPlayerController.h"
 
 
 void UCPanelMakerSpace::NativeConstruct()
@@ -16,6 +17,7 @@ void UCPanelMakerSpace::NativeConstruct()
 
 	ButtonContentsHUB->OnClicked.AddDynamic(this, &UCPanelMakerSpace::OpenContentsHUB);
 	ButtonOpenLiveContents->OnClicked.AddDynamic(this, &UCPanelMakerSpace::OpenLiveContents);
+	ButtonNewContents->OnClicked.AddDynamic(this, &UCPanelMakerSpace::OpenEditorHome);
 }
 
 void UCPanelMakerSpace::OpenContentsHUB()
@@ -30,3 +32,14 @@ void UCPanelMakerSpace::OpenContentsHUB()
 void UCPanelMakerSpace::OpenLiveContents()
 {
 }
+
+void UCPanelMakerSpace::OpenEditorHome()
+{
+	AMainMenuPlayerController* PlayerController = Cast<AMainMenuPlayerController>(GetOwningPlayer());
+	if(PlayerController)
+	{
+		PlayerController->OpenEditorModeUI();
+	}
+}
+
+

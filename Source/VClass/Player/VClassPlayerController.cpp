@@ -28,6 +28,7 @@ void AVClassPlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProper
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AVClassPlayerController, info);
+	DOREPLIFETIME(AVClassPlayerController, ObjectSpawner);
 }
 
 void AVClassPlayerController::BeginPlay()

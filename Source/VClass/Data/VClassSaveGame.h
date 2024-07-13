@@ -21,4 +21,7 @@ public:
 
 	UPROPERTY()
 	ImageAppearMode ImageMode;
+
+	UPROPERTY()
+	FString PlayerName;
 };

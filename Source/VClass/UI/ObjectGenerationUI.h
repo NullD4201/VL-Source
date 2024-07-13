@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include <Components/Image.h>
-#include "HostUI.generated.h"
+#include "VClass/Actor/HostSpawnableObject.h"
+#include "ObjectGenerationUI.generated.h"
 
 /**
  * 
@@ -13,11 +14,12 @@
 UENUM(BlueprintType)
 enum class HostUIState : uint8 {
 	HOST_PLAIN UMETA(DisplayName = "Plain"),
-	HOST_GENERATEOBJ UMETA(DisplayName = "Generate Object Mode")
+	HOST_GENERATEOBJ UMETA(DisplayName = "Generate Object Mode"),
+	HOST_GRABOBJ UMETA(DisplayName = "Grab Object Mode")
 };
 
-UCLASS()
-class VCLASS_API UHostUI : public UUserWidget
+UCLASS(Blueprintable)
+class VCLASS_API UObjectGenerationUI : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -37,20 +39,29 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StartObjGeneration();
-
 	UFUNCTION(BlueprintCallable)
 	void EndObjGeneration();
 
+	UFUNCTION(BlueprintCallable)
+	void ResizeObject(float AxisValue);
+
+	UFUNCTION(BlueprintCallable)
+	void StartObjGrab(AHostSpawnableObject* ObjToGrab);
+	UFUNCTION(BlueprintCallable)
+	void EndObjGrab();
+
 public:
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UImage* selectionImg;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AActor> spawningActorClass;
+	TSubclassOf<AHostSpawnableObject> spawningActorClass;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float OBJ_GENERATING_DISTANCE = 200.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float OBJ_RESIZING_DELTA = 0.2f;
 
 	UPROPERTY(BlueprintReadWrite)
 	FVector2D dragStartPos;
@@ -60,5 +71,7 @@ protected:
 
 private:
 	void OnGenerateObjectMode();
-	
+	void OnGrabObjectMode();
+
+	AHostSpawnableObject* ControllingObj;
 };

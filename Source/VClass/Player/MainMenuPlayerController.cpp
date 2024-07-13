@@ -3,17 +3,25 @@
 
 #include "MainMenuPlayerController.h"
 
+#include "VClass/Data/VClassSaveGame.h"
 #include "VClass/UI/MainMenuWidget.h"
+#include "VClass/UI/Panels/CEditorHome.h"
 
 
 AMainMenuPlayerController::AMainMenuPlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> _Widget(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprints/UI/UI_MainMenu.UI_MainMenu_C'"));
-	if (_Widget.Succeeded())
+	static ConstructorHelpers::FClassFinder<UHomeUI> HOMEUICLASS(TEXT("/Game/Blueprints/UI/UI_HomeScreen.UI_HomeScreen_C"));
+	if (HOMEUICLASS.Succeeded())
 	{
-		mMainMenuWidgetClass = _Widget.Class;
+		mHomeUIClass = HOMEUICLASS.Class;
+	}
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> EDITORWIDGETCLASS(TEXT("/Game/Blueprints/UI/EditorModeUI.EditorModeUI_C"));
+	if(EDITORWIDGETCLASS.Succeeded())
+	{
+		mEditorModeWidgetClass = EDITORWIDGETCLASS.Class;
 	}
 
 	bShowMouseCursor = true;
@@ -23,27 +31,28 @@ AMainMenuPlayerController::AMainMenuPlayerController()
 
 void AMainMenuPlayerController::BeginPlay()
 {
-	if (!HasAuthority())
+	Super::BeginPlay();
+	
+	if (mPlayerType == EPlayerType::Host)
 	{
-		if (mPlayerType == EPlayerType::Host)
-		{
-			FInputModeGameAndUI InputModeGameAndUI;
-			SetInputMode(InputModeGameAndUI);
-		}
-		else if (mPlayerType == EPlayerType::Client)
-		{
-			FInputModeGameOnly InputModeGameOnly;
-			SetInputMode(InputModeGameOnly);
-		}
-		else
-		{
-			FInputModeUIOnly InputModeUIOnly;
-			SetInputMode(InputModeUIOnly);
-		}
-
-		mMainMenuWidget = CreateWidget<UMainMenuWidget>(GetWorld(), mMainMenuWidgetClass);
-		mMainMenuWidget->AddToViewport();
+		FInputModeGameAndUI InputModeGameAndUI;
+		SetInputMode(InputModeGameAndUI);
 	}
+	else if (mPlayerType == EPlayerType::Client)
+	{
+		FInputModeGameOnly InputModeGameOnly;
+		SetInputMode(InputModeGameOnly);
+	}
+	else
+	{
+		FInputModeUIOnly InputModeUIOnly;
+		SetInputMode(InputModeUIOnly);
+	}
+
+	mHomeUI = CreateWidget<UHomeUI>(this, mHomeUIClass);
+	mEditorModeWidget = CreateWidget<UEditorModeWidget>(this, mEditorModeWidgetClass);
+		
+	mHomeUI->AddToViewport();
 }
 
 void AMainMenuPlayerController::Tick(float DeltaSeconds)
@@ -61,13 +70,15 @@ void AMainMenuPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimePrope
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
-void AMainMenuPlayerController::SetPlayer(const FString& Address, const FString& Port, const bool IsHost, const FString& SeatLine, const FString& SeatNum)
+void AMainMenuPlayerController::SetPlayer(const FString& Address, const FString& Port, const bool IsHost, const FString& Key)
 {
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
 	FString Options = "";
 	Options.Append("IsHost=");
 	Options.Append(IsHost ? "true" : "false");
-	Options.Append("?SeatNum=");
-	Options.Append(SeatNum);
+	Options.Append("?Key=");
+	Options.Append(Key);
+	Options.Append(FString::Format(TEXT("?ImageAppearMode={0}"),{static_cast<int32>(SaveGame->ImageMode)}));
 
 	if (IsHost)
 		mPlayerType = EPlayerType::Host;
@@ -76,3 +87,17 @@ void AMainMenuPlayerController::SetPlayer(const FString& Address, const FString&
 
 	UGameplayStatics::OpenLevel(GetWorld(), FName(Address + ":" + Port), true, Options);
 }
+
+void AMainMenuPlayerController::OpenEditorModeUI()
+{
+	mHomeUI->RemoveFromViewport();
+	mEditorModeWidget->AddToViewport();
+}
+
+void AMainMenuPlayerController::OpenHomeScreenUI()
+{
+	mEditorModeWidget->RemoveFromViewport();
+	mHomeUI->AddToViewport();
+}
+
+

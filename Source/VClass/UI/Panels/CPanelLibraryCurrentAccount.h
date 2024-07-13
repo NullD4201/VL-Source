@@ -47,4 +47,7 @@ public:
 
 	UFUNCTION()
 	void EditProfile();
+
+	UFUNCTION()
+	void SetProfileName(const FString& NewName, const FString& NewEmail, const FString& message);
 };

@@ -3,6 +3,9 @@
 
 #include "CPanelLiveContents.h"
 
+#include "VClass/Player/MainMenuGameMode.h"
+#include "VClass/Player/MainMenuPlayerController.h"
+
 
 void UCPanelLiveContents::NativeConstruct()
 {
@@ -12,6 +15,7 @@ void UCPanelLiveContents::NativeConstruct()
 	ButtonOutside = Cast<UButton>(GetWidgetFromName("Outside"));
 
 	ButtonOutside->OnClicked.AddDynamic(this, &UCPanelLiveContents::ClickOutside);
+	ButtonProduct->OnClicked.AddDynamic(this, &UCPanelLiveContents::ClickButtonProduct);
 }
 
 void UCPanelLiveContents::ClickOutside()
@@ -22,3 +26,14 @@ void UCPanelLiveContents::ClickOutside()
 	this->SetVisibility(ESlateVisibility::Hidden);
 
 }
+
+void UCPanelLiveContents::ClickButtonProduct()
+{
+	AMainMenuGameMode* GameMode = Cast<AMainMenuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	AMainMenuPlayerController* PlayerController = Cast<AMainMenuPlayerController>(GetOwningPlayer());
+	if(GameMode && PlayerController)
+	{
+		PlayerController->SetPlayer(GameMode->StageServerIPAddress,FString::FromInt(GameMode->StageServerPort),GameMode->IsHost,GameMode->Key);
+	}
+}
+

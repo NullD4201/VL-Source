@@ -30,4 +30,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 ImageServerPort = 8000;
+
+	UPROPERTY(EditAnywhere)
+	bool IsHost;
+
+	UPROPERTY(EditAnywhere)
+	FString Key;
 };

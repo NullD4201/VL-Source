@@ -4,6 +4,10 @@
 
 #include "../ProjectInfo.h"
 #include "GameFramework/PlayerController.h"
+#include <VClass/UI/EditorModeWidget.h>
+
+#include "Structures/PlayerInfo.h"
+#include "VClass/UI/HomeUI.h"
 #include "MainMenuPlayerController.generated.h"
 
 /**
@@ -21,8 +25,11 @@ public:
 	EPlayerType mPlayerType = EPlayerType::None;
 
 protected:
-	TSubclassOf<UUserWidget> mMainMenuWidgetClass;
-	class UMainMenuWidget* mMainMenuWidget;
+	TSubclassOf<UHomeUI> mHomeUIClass;
+	class UHomeUI* mHomeUI;
+
+	TSubclassOf<UUserWidget> mEditorModeWidgetClass;
+	class UEditorModeWidget* mEditorModeWidget;
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -31,6 +38,10 @@ protected:
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	void OpenEditorModeUI();
+	void OpenHomeScreenUI();
+
 	UFUNCTION(BlueprintCallable)
-	void SetPlayer(const FString& Address, const FString& Port, const bool IsHost, const FString& SeatLine, const FString& SeatNum);
+	void SetPlayer(const FString& Address, const FString& Port, const bool IsHost, const FString& Key);
+
 };

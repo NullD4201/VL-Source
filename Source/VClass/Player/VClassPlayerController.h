@@ -8,6 +8,7 @@
 #include <VClass/Gesture/VClassGestureRecognitor.h>
 #include <VClass/Player/Structures/PlayerInfo.h>
 
+#include "VClass/Actor/HostObjectSpawnActor.h"
 #include "VClass/UI/Panels/CPanelLiveHost.h"
 #include "VClassPlayerController.generated.h"
 
@@ -68,6 +69,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, replicated)
 	FPlayerInfo info;
+	UPROPERTY(VisibleAnywhere, replicated)
+	AHostObjectSpawnActor* ObjectSpawner;
 
 	FVClassInteractonDelegate InteractionDelegate;
 	FVClassControllerLogoutDelegate LogoutDelegate;

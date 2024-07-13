@@ -73,9 +73,15 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
     APlayerStart* playerStart = *It;
     FActorSpawnParameters SpawnParams;
     SpawnParams.Owner = NewPlayerController;
+    //Run when client is "Host"
     if (player->bIsHost) {
         APawn* pawn = GetWorld()->SpawnActor<APawn>(HostPawn, playerStart->GetTransform(), SpawnParams);
         player->Possess(pawn);
+
+        if(GetWorld()->SpawnActor<AHostObjectSpawnActor>(AHostObjectSpawnActor::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, params))
+        {
+            UE_LOG(VClass, Warning, TEXT("HostObjectSpawnActor Spawned"));
+        }
 
         FString ImageAppearModeStr = UGameplayStatics::ParseOption(lastLoginRequestOption, TEXT("ImageAppearMode"));
         if(!ImageAppearModeStr.IsEmpty())
@@ -87,6 +93,7 @@ void AVClassGameMode::PostLogin(APlayerController* NewPlayerController) {
             ImageDisplayActor->CurrentMode = Mode;
         }
     }
+    //Run when client is "Client"
     else {
         APawn* pawn = GetWorld()->SpawnActor<APawn>(ClientPawn, playerStart->GetTransform(), SpawnParams);
         player->Possess(pawn);
