@@ -42,6 +42,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UScrollBox* ScrollBoxContents;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UImage* ImageUIBackground1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UImage* ImageUIBackground2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UImage* ImageContentsBackground;
+
 private:
 	UImage* ImageScene;
 	UImage* ImageContent;
@@ -50,7 +59,7 @@ private:
 	TArray<UImage*> MediaList;
 	TArray<UImage*> ActorList;
 
-	bool bIsPreviewMode;
+	bool bIsPreviewMode = false;
 
 	int SceneCount = 0;
 	int MediaCount = 0;

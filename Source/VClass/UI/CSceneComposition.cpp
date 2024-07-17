@@ -22,14 +22,16 @@ void UCSceneComposition::NativeConstruct()
 	ScrollBoxScenes = Cast<UScrollBox>(GetWidgetFromName("SceneList"));
 	ScrollBoxContents = Cast<UScrollBox>(GetWidgetFromName("ContentsList"));
 
+	ImageUIBackground1 = Cast<UImage>(GetWidgetFromName("UIBackground1"));
+	ImageUIBackground2 = Cast<UImage>(GetWidgetFromName("UIBackground2"));
+	ImageContentsBackground = Cast<UImage>(GetWidgetFromName("ContentsBackground"));
+
 	ButtonCategoryMedia->OnClicked.AddDynamic(this, &UCSceneComposition::SetCategoryToMedia);
 	ButtonCategoryActor->OnClicked.AddDynamic(this, &UCSceneComposition::SetCategoryToActor);
 	ButtonLiveMode->OnClicked.AddDynamic(this, &UCSceneComposition::LiveMode);
 	ButtonPreviewMode->OnClicked.AddDynamic(this, &UCSceneComposition::PreviewMode);
 	ButtonAddScene->OnClicked.AddDynamic(this, &UCSceneComposition::AddScene);
 	ButtonAddContent->OnClicked.AddDynamic(this, &UCSceneComposition::AddContent);
-
-	bIsPreviewMode = false;
 }
 
 void UCSceneComposition::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -147,6 +149,14 @@ void UCSceneComposition::LiveMode()
 void UCSceneComposition::PreviewMode()
 {
 	bIsPreviewMode = !bIsPreviewMode;
+	
+	ImageUIBackground1->SetVisibility(bIsPreviewMode ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+	ImageContentsBackground->SetVisibility(bIsPreviewMode ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+	ScrollBoxContents->SetVisibility(bIsPreviewMode ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+	ButtonCategoryMedia->SetVisibility(bIsPreviewMode ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+	ButtonCategoryActor->SetVisibility(bIsPreviewMode ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+
+	ButtonAddScene->SetVisibility(bIsPreviewMode ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
 }
 
 void UCSceneComposition::AddScene()
