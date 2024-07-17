@@ -47,7 +47,8 @@ private:
 	UImage* ImageContent;
 
 	TArray<UImage*> SceneList;
-	TArray<UImage*> ContentList;
+	TArray<UImage*> MediaList;
+	TArray<UImage*> ActorList;
 
 	bool bIsPreviewMode;
 
@@ -55,8 +56,18 @@ private:
 	int MediaCount = 0;
 	int ActorCount = 0;
 
+	enum CurrentContentCategory
+	{
+		Media,
+		Actor,
+	};
+
+public:
+	CurrentContentCategory CurrentCategory = Media;
+
 protected:
 	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
 	UFUNCTION()
 	void SetCategoryToMedia(); 
