@@ -31,4 +31,7 @@ public:
 	UFUNCTION(Server,Reliable)
 	void ServerMoveActor(AHostSpawnableObject* Actor, FTransform Transform);
 	
+	UFUNCTION(Server,Reliable, BlueprintCallable)
+	void ServerLoadScene(const FString& Scene);
+	
 };

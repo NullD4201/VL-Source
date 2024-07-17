@@ -176,3 +176,9 @@ UTexture2D* UImportFiles::LoadTextureFromBytes(const TArray<uint8>& ImageData)
 
 	return nullptr;
 }
+
+FString UImportFiles::ConvertFSoftPathToFString(FSoftClassPath path)
+{
+	return path.ToString();
+}
+

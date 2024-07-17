@@ -29,4 +29,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static UTexture2D* LoadTextureFromBytes(const TArray<uint8>& ImageData);
+
+	UFUNCTION(BlueprintCallable)
+	static FString ConvertFSoftPathToFString(FSoftClassPath path);
 };
