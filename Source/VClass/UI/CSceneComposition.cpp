@@ -19,12 +19,28 @@ void UCSceneComposition::NativeConstruct()
 	ButtonAddScene = Cast<UButton>(GetWidgetFromName("AddScene"));
 	ButtonAddContent = Cast<UButton>(GetWidgetFromName("AddContent"));
 
+	ButtonIndex0 = Cast<UButton>(GetWidgetFromName("Button_0"));
+	ButtonIndex1 = Cast<UButton>(GetWidgetFromName("Button_1"));
+	ButtonIndex2 = Cast<UButton>(GetWidgetFromName("Button_2"));
+	ButtonIndex3 = Cast<UButton>(GetWidgetFromName("Button_3"));
+	ButtonIndex4 = Cast<UButton>(GetWidgetFromName("Button_4"));
+	ButtonIndex5 = Cast<UButton>(GetWidgetFromName("Button_5"));
+	ButtonIndex6 = Cast<UButton>(GetWidgetFromName("Button_6"));
+	ButtonIndex7 = Cast<UButton>(GetWidgetFromName("Button_7"));
+	ButtonIndex8 = Cast<UButton>(GetWidgetFromName("Button_8"));
+	ButtonIndex9 = Cast<UButton>(GetWidgetFromName("Button_9"));
+	ButtonIndex10 = Cast<UButton>(GetWidgetFromName("Button_10"));
+
 	ScrollBoxScenes = Cast<UScrollBox>(GetWidgetFromName("SceneList"));
 	ScrollBoxContents = Cast<UScrollBox>(GetWidgetFromName("ContentsList"));
+	ScrollBoxSceneHighlight = Cast<UScrollBox>(GetWidgetFromName("SceneHighlightScroll"));
+	ScrollBoxContentHighlight = Cast<UScrollBox>(GetWidgetFromName("ContentHighlightScroll"));
 
 	ImageUIBackground1 = Cast<UImage>(GetWidgetFromName("UIBackground1"));
 	ImageUIBackground2 = Cast<UImage>(GetWidgetFromName("UIBackground2"));
 	ImageContentsBackground = Cast<UImage>(GetWidgetFromName("ContentsBackground"));
+	ImageSceneHighlight = Cast<UImage>(GetWidgetFromName("SceneHighlight"));
+	ImageContentHighlight = Cast<UImage>(GetWidgetFromName("ContentHighlight"));
 
 	ButtonCategoryMedia->OnClicked.AddDynamic(this, &UCSceneComposition::SetCategoryToMedia);
 	ButtonCategoryActor->OnClicked.AddDynamic(this, &UCSceneComposition::SetCategoryToActor);
@@ -74,6 +90,9 @@ void UCSceneComposition::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 		ScrollBoxContentsSlot->SetPosition(FVector2D(32, (CurrentCategory == Media ? 859 : 761)));
 		ScrollBoxContentsSlot->SetSize(FVector2D(1498, (CurrentCategory == Media ? 190 : 288)));
 	}
+
+	ScrollBoxSceneHighlight->SetScrollOffset(ScrollBoxScenes->GetScrollOffset());
+	ScrollBoxContentHighlight->SetScrollOffset(ScrollBoxContents->GetScrollOffset());
 }
 
 void UCSceneComposition::SetCategoryToMedia()
@@ -90,7 +109,7 @@ void UCSceneComposition::SetCategoryToMedia()
 		ButtonAddContent->RemoveFromParent();
 		for (int Number = 0; Number < MediaList.Num(); Number++)
 		{
-			UImage* MediaImage = MediaList[Number];
+			UButton* MediaImage = MediaList[Number];
 			ScrollBoxContents->AddChild(MediaImage);
 
 			UScrollBoxSlot* ImageSlot = Cast<UScrollBoxSlot>(MediaImage->Slot);
@@ -100,7 +119,12 @@ void UCSceneComposition::SetCategoryToMedia()
 				ImageSlot->SetSize(FSlateChildSize(ESlateSizeRule::Automatic));
 				ImageSlot->SetHorizontalAlignment(HAlign_Left);
 				ImageSlot->SetVerticalAlignment(VAlign_Top);
-				MediaImage->SetDesiredSizeOverride(FVector2D(260, 146));
+				
+				FButtonStyle ButtonStyle;
+				ButtonStyle.Normal.SetImageSize(FVector2D(260, 146));
+				ButtonStyle.Hovered.SetImageSize(FVector2D(260, 146));
+				ButtonStyle.Pressed.SetImageSize(FVector2D(260, 146));
+				MediaImage->SetStyle(ButtonStyle);
 			}
 
 			MediaImage = nullptr;
@@ -123,7 +147,7 @@ void UCSceneComposition::SetCategoryToActor()
 		ButtonAddContent->RemoveFromParent();
 		for (int Number = 0; Number < ActorList.Num(); Number++)
 		{
-			UImage* ActorImage = ActorList[Number];
+			UButton* ActorImage = ActorList[Number];
 			ScrollBoxContents->AddChild(ActorImage);
 
 			UScrollBoxSlot* ImageSlot = Cast<UScrollBoxSlot>(ActorImage->Slot);
@@ -133,7 +157,12 @@ void UCSceneComposition::SetCategoryToActor()
 				ImageSlot->SetSize(FSlateChildSize(ESlateSizeRule::Automatic));
 				ImageSlot->SetHorizontalAlignment(HAlign_Left);
 				ImageSlot->SetVerticalAlignment(VAlign_Top);
-				ActorImage->SetDesiredSizeOverride(FVector2D(260, 243));
+				
+				FButtonStyle ButtonStyle;
+				ButtonStyle.Normal.SetImageSize(FVector2D(260, 146));
+				ButtonStyle.Hovered.SetImageSize(FVector2D(260, 146));
+				ButtonStyle.Pressed.SetImageSize(FVector2D(260, 146));
+				ActorImage->SetStyle(ButtonStyle);
 			}
 
 			ActorImage = nullptr;
@@ -163,7 +192,9 @@ void UCSceneComposition::AddScene()
 {
 	ButtonAddScene->RemoveFromParent();
 	FString SceneName = FString::Format(TEXT("Scene{0}"), { FString::FromInt(SceneCount) });
-	ImageScene = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *SceneName);
+	FString SceneHighlightName = FString::Format(TEXT("DSH{0}"), { FString::FromInt(SceneCount) });
+	ImageScene = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), *SceneName);
+	ImageSceneHighlightDummy = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *SceneHighlightName);
 	
 	ScrollBoxScenes->AddChild(ImageScene);
 	ScrollBoxScenes->AddChild(ButtonAddScene);
@@ -174,20 +205,52 @@ void UCSceneComposition::AddScene()
 		ImageSlot->SetSize(FSlateChildSize(ESlateSizeRule::Automatic));
 		ImageSlot->SetHorizontalAlignment(HAlign_Left);
 		ImageSlot->SetVerticalAlignment(VAlign_Top);
-		ImageScene->SetDesiredSizeOverride(FVector2D(258, 145));
+				
+		FButtonStyle ButtonStyle;
+		ButtonStyle.Normal.SetImageSize(FVector2D(258, 145));
+		ButtonStyle.Hovered.SetImageSize(FVector2D(258, 145));
+		ButtonStyle.Pressed.SetImageSize(FVector2D(258, 145));
+		ImageScene->SetStyle(ButtonStyle);
+
+		ImageScene->OnClicked.AddDynamic(this, &UCSceneComposition::ButtonClickTest);
 	}
+
+	if (SceneCount > 0)
+	{
+		ScrollBoxSceneHighlight->AddChild(ImageSceneHighlightDummy);
+		UScrollBoxSlot* ImageHighlightDummySlot = Cast<UScrollBoxSlot>(ImageSceneHighlightDummy->Slot);
+		if (ImageHighlightDummySlot)
+		{
+			ImageHighlightDummySlot->SetPadding(FMargin(6, 0, 0, 0));
+			ImageHighlightDummySlot->SetSize(FSlateChildSize(ESlateSizeRule::Automatic));
+			ImageHighlightDummySlot->SetHorizontalAlignment(HAlign_Left);
+			ImageHighlightDummySlot->SetVerticalAlignment(VAlign_Top);
+			ImageSceneHighlightDummy->SetDesiredSizeOverride(FVector2D(270, 157));
+		
+			FSlateBrush Brush;
+			Brush.DrawAs = ESlateBrushDrawType::RoundedBox;
+			Brush.TintColor = FColor::Transparent;
+			Brush.OutlineSettings.Color = FLinearColor::Transparent;
+			Brush.OutlineSettings.Width = 6.0f;
+			Brush.OutlineSettings.RoundingType = ESlateBrushRoundingType::Type::FixedRadius;
+			ImageSceneHighlightDummy->SetBrush(Brush);
+		}
+		
+		ImageSceneHighlightDummy = nullptr;
+	}
+	
 	SceneList.Add(ImageScene);
 	SceneCount++;
-	ImageScene = nullptr;
 
 	ScrollBoxScenes->ScrollToEnd();
+	ScrollBoxSceneHighlight->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UCSceneComposition::AddContent()
 {
 	ButtonAddContent->RemoveFromParent();
 	FString ContentName = FString::Format(TEXT("{0}{1}"), {(CurrentCategory == Media ? "Media" : "Actor"), *FString::FromInt((CurrentCategory == Media ? MediaCount : ActorCount))});
-	ImageContent = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *ContentName);
+	ImageContent = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), *ContentName);
 	
 	ScrollBoxContents->AddChild(ImageContent);
 	ScrollBoxContents->AddChild(ButtonAddContent);
@@ -198,7 +261,12 @@ void UCSceneComposition::AddContent()
 		ImageSlot->SetSize(FSlateChildSize(ESlateSizeRule::Automatic));
 		ImageSlot->SetHorizontalAlignment(HAlign_Left);
 		ImageSlot->SetVerticalAlignment(VAlign_Top);
-		ImageContent->SetDesiredSizeOverride(FVector2D(260, (CurrentCategory == Media ? 146 : 243)));
+				
+		FButtonStyle ButtonStyle;
+		ButtonStyle.Normal.SetImageSize(FVector2D(260, (CurrentCategory == Media ? 146 : 243)));
+		ButtonStyle.Hovered.SetImageSize(FVector2D(260, (CurrentCategory == Media ? 146 : 243)));
+		ButtonStyle.Pressed.SetImageSize(FVector2D(260, (CurrentCategory == Media ? 146 : 243)));
+		ImageContent->SetStyle(ButtonStyle);
 	}	
 	if (CurrentCategory == Media)
 	{
@@ -213,4 +281,13 @@ void UCSceneComposition::AddContent()
 	ImageContent = nullptr;
 
 	ScrollBoxContents->ScrollToEnd();
+}
+
+void UCSceneComposition::ButtonClickTest()
+{
+}
+
+void UCSceneComposition::ButtonClickParam(UButton* Button)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, Button->GetName());
 }

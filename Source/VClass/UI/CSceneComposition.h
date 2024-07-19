@@ -35,12 +35,41 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UButton* ButtonAddContent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex2;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex3;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex4;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex5;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex6;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex7;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex8;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex9;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonIndex10;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UScrollBox* ScrollBoxScenes;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UScrollBox* ScrollBoxContents;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UScrollBox* ScrollBoxSceneHighlight;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UScrollBox* ScrollBoxContentHighlight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UImage* ImageUIBackground1;
@@ -51,13 +80,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UImage* ImageContentsBackground;
 
-private:
-	UImage* ImageScene;
-	UImage* ImageContent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UImage* ImageSceneHighlight;
 
-	TArray<UImage*> SceneList;
-	TArray<UImage*> MediaList;
-	TArray<UImage*> ActorList;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UImage* ImageContentHighlight;
+
+private:
+	UButton* ImageScene;
+	UButton* ImageContent;
+	UImage* ImageSceneHighlightDummy;
+	UImage* ImageContentHighlightDummy;
+
+	TArray<UButton*> SceneList;
+	TArray<UButton*> MediaList;
+	TArray<UButton*> ActorList;
 
 	bool bIsPreviewMode = false;
 
@@ -95,4 +132,12 @@ protected:
 
 	UFUNCTION()
 	void AddContent();
+
+	UFUNCTION()
+	void ButtonClickTest();
+
+	UFUNCTION()
+	void ButtonClickParam(UButton* Button);
+
+	FScriptDelegate Delegate;
 };
