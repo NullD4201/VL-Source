@@ -37,6 +37,21 @@ class ImageHandler(BaseHTTPRequestHandler):
         else:
             self.send_error(404, 'Image not found')
 
+class CustomHTTPRequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        # 비디오 파일 경로
+        video_path = 'testmp4.mp4'
+            
+        # 파일 이름과 MIME 타입 설정
+        self.send_response(200)
+        self.send_header('Content-Type', 'video/mp4')
+        self.send_header('Content-Disposition', 'attachment; filename="video.mp4"')
+        self.end_headers()
+        
+        # 파일 읽기 및 전송
+        with open(video_path, 'rb') as file:
+            self.wfile.write(file.read())
+
 def run(server_class=HTTPServer, handler_class=ImageHandler, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)

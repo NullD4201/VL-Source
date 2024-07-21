@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "VClassElectraPlayer.h"
 #include "GameFramework/Actor.h"
 #include "HostObjectSpawnActor.generated.h"
 
@@ -20,6 +21,20 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	TSubclassOf<AVClassElectraPlayer> ElectraPlay_class;
+
+	FVector LocationIndex[11] = {FVector(-2.0,-1115.0,242.0),
+								FVector(-121.0,-992.0,242.0),
+								FVector(135.0,-992.0,242.0),
+								FVector(-232.0,-894.0,242.0),
+								FVector(-126.0,-894.0,242.0),
+								FVector(-7.0,-894.0,242.0),
+								FVector(135.0,-894.0,242.0),
+								FVector(250.0,-849.0,242.0),
+								FVector(-126.0,-794.0,242.0),
+								FVector(-7.0,-800.0,242.0),
+								FVector(135.0,-802.0,242.0)};
 
 public:	
 	// Called every frame

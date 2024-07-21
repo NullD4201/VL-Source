@@ -16,6 +16,9 @@ public:
 	AHostSpawnableObject();
 	
 	void ChangeScale(FVector NewScale);
+
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void Despawn();
 	
 private:
 	UPROPERTY(ReplicatedUsing=OnRep_Scale)

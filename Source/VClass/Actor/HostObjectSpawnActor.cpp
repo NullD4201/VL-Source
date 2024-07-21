@@ -5,6 +5,8 @@
 
 #include "HostSpawnableObject.h"
 #include "MediaDisplay.h"
+#include "EntitySystem/MovieSceneEntitySystemRunner.h"
+#include "UObject/UnrealTypePrivate.h"
 #include "VClass/VClass.h"
 #include "VClass/Player/VClassPlayerController.h"
 
@@ -15,6 +17,7 @@ AHostObjectSpawnActor::AHostObjectSpawnActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	
 	bReplicates = true;
 }
 
@@ -67,6 +70,13 @@ void AHostObjectSpawnActor::ServerMoveActor_Implementation(AHostSpawnableObject*
 }
 void AHostObjectSpawnActor::ServerLoadScene_Implementation(const FString& Scene)
 {
+	for(TActorIterator<AHostSpawnableObject> IT(GetWorld()); IT; ++IT)
+	{
+		AHostSpawnableObject* SpawnableObject = *IT;
+		SpawnableObject->Despawn();
+		SpawnableObject->SetReplicates(false);
+		SpawnableObject->Destroy();
+	}
 	TArray<FString> strArray;
 	Scene.ParseIntoArray(strArray,TEXT("\n"),true);
 
@@ -83,17 +93,22 @@ void AHostObjectSpawnActor::ServerLoadScene_Implementation(const FString& Scene)
 			{
 				TSubclassOf<AHostSpawnableObject> ActorClass = LoadedClass;
 
-				GetWorld()->SpawnActor<AHostSpawnableObject>(ActorClass, FVector::ZeroVector, FRotator::ZeroRotator);
+				GetWorld()->SpawnActor<AHostSpawnableObject>(ActorClass, LocationIndex[FCString::Atoi(*_arr[2])], FRotator::ZeroRotator);
 			}
 			else
 			{
 				UE_LOG(VClass, Error, TEXT("Class \"%s\" is not exist"), *_arr[1]);
 			}
 		}
+		else if(_arr[0].Equals(TEXT("M")))
+		{
+			AMediaDisplay* media = GetWorld()->SpawnActor<AMediaDisplay>(AMediaDisplay::StaticClass(), LocationIndex[FCString::Atoi(*_arr[2])], FRotator::ZeroRotator);
+			media->SetImage(_arr[1]);
+		}
 		else
 		{
-			AMediaDisplay* media = GetWorld()->SpawnActor<AMediaDisplay>(AMediaDisplay::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
-			media->SetImage(_arr[1]);
+			AVClassElectraPlayer* electraPlayer = GetWorld()->SpawnActor<AVClassElectraPlayer>(ElectraPlay_class, LocationIndex[FCString::Atoi(*_arr[2])], FRotator::ZeroRotator);
+			electraPlayer->NativeSetURL(_arr[1]);
 		}
 	}
 }

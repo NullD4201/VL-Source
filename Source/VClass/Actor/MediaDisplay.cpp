@@ -28,6 +28,8 @@ AMediaDisplay::AMediaDisplay()
 		UMaterial* FoundMaterial = MATERIAL.Object;
 		mesh->SetMaterial(0, FoundMaterial);
 	}
+
+	mesh->SetWorldRotation(FRotator(0.0,0.0,90.0));
 }
 
 // Called when the game starts or when spawned

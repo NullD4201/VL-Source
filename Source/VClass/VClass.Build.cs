@@ -9,12 +9,12 @@ public class VClass : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer", "Networking" , "Voice", "UniversalVoiceChatPro", "HTTP" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" , "UMG", "AudioMixer", "Networking" , "Voice", "UniversalVoiceChatPro", "HTTP" , "WebBrowser", "WebBrowserWidget"});
 
 		//PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
-		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" , "Dollars"});
+		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" , "Dollars" });
 		
 		string OpusPath = Path.Combine(ModuleDirectory, "ThirdParty", "opus-1.5.2");
 		PublicIncludePaths.Add(Path.Combine(OpusPath, "include"));

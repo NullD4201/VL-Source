@@ -38,3 +38,7 @@ void AHostSpawnableObject::OnRep_Scale()
 	SetActorScale3D(ReplicatedScale);
 }
 
+void AHostSpawnableObject::Despawn_Implementation()
+{
+	Destroy();
+}
