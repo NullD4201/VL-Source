@@ -6,7 +6,6 @@
 #include "Blueprint/WidgetTree.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/ScrollBoxSlot.h"
-#include "fmt/chrono.h"
 
 
 void UCSceneComposition::NativeConstruct()
