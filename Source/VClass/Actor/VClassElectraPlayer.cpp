@@ -12,7 +12,7 @@ AVClassElectraPlayer::AVClassElectraPlayer()
 
 void AVClassElectraPlayer::NativeSetURL_Implementation(const FString& url)
 {
-	BlueprintableSetURL(TEXT("https://www.youtube.com/watch?v=%s") + url);
+	BlueprintableSetURL(TEXT("https://www.youtube.com/watch?v=")+url+TEXT("&start_radio=1"));
 }
 
 

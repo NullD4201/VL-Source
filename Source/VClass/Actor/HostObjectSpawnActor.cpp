@@ -17,7 +17,11 @@ AHostObjectSpawnActor::AHostObjectSpawnActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	
+	static ConstructorHelpers::FClassFinder<AActor> ELECTRA_PLAY(TEXT("/Game/ElectraPlay/Blueprints/BP_ElectraPlayer.BP_ElectraPlayer_C"));
+	if(ELECTRA_PLAY.Succeeded())
+	{
+		ElectraPlay_class = ELECTRA_PLAY.Class;
+	}
 	bReplicates = true;
 }
 
