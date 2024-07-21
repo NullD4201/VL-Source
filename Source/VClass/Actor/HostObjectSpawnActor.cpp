@@ -44,6 +44,7 @@ void AHostObjectSpawnActor::BeginPlay()
 void AHostObjectSpawnActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
 
 }
 

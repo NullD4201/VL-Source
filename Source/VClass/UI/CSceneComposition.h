@@ -5,6 +5,7 @@
 #include "../ProjectInfo.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Components/CanvasPanel.h"
 #include "Components/Image.h"
 #include "Components/ScrollBox.h"
 #include "CSceneComposition.generated.h"
@@ -60,6 +61,29 @@ public:
 	UButton* ButtonIndex10;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia2;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia3;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia4;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia5;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia6;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia7;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia8;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia9;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia10;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UButton* ButtonMedia11;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UScrollBox* ScrollBoxScenes;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -69,7 +93,10 @@ public:
 	UScrollBox* ScrollBoxSceneHighlight;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UScrollBox* ScrollBoxContentHighlight;
+	UScrollBox* ScrollBoxMediaHighlight;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UScrollBox* ScrollBoxActorHighlight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UImage* ImageUIBackground1;
@@ -81,16 +108,19 @@ public:
 	UImage* ImageContentsBackground;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UImage* ImageSceneHighlight;
+	UCanvasPanel* CanvasPanelIndex;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UImage* ImageContentHighlight;
+	UCanvasPanel* CanvasPanelContentsBrowserMedia;
 
 private:
 	UButton* ImageScene;
 	UButton* ImageContent;
 	UImage* ImageSceneHighlightDummy;
-	UImage* ImageContentHighlightDummy;
+	UImage* ImageMediaHighlightDummy;
+	UImage* ImageActorHighlightDummy;
+
+	FString _Name;
 
 	TArray<UButton*> SceneList;
 	TArray<UButton*> MediaList;
@@ -110,6 +140,8 @@ private:
 
 public:
 	CurrentContentCategory CurrentCategory = Media;
+
+	FSlateBrush CurrentContent;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -134,10 +166,22 @@ protected:
 	void AddContent();
 
 	UFUNCTION()
-	void ButtonClickTest();
+	void FocusToScene();
 
 	UFUNCTION()
-	void ButtonClickParam(UButton* Button);
+	void FocusToContent();
+
+	UFUNCTION()
+	void SetButtonTexture(UButton* Button, UTexture* Texture);
+
+	UFUNCTION()
+	void ResetIndexPanel();
+
+	UFUNCTION()
+	void SetIndexButtonContent();
+
+	UFUNCTION()
+	void AddMedia();
 
 	FScriptDelegate Delegate;
 };
