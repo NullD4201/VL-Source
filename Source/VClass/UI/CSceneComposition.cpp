@@ -6,6 +6,8 @@
 #include "Blueprint/WidgetTree.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/ScrollBoxSlot.h"
+#include "Misc/DefaultValueHelper.h"
+#include "VClass/Data/VClassSaveGame.h"
 
 
 void UCSceneComposition::NativeConstruct()
@@ -31,17 +33,17 @@ void UCSceneComposition::NativeConstruct()
 	ButtonIndex9 = Cast<UButton>(GetWidgetFromName("Index9"));
 	ButtonIndex10 = Cast<UButton>(GetWidgetFromName("Index10"));
 
-	ButtonMedia1 = Cast<UButton>(GetWidgetFromName("Media1"));
-	ButtonMedia2 = Cast<UButton>(GetWidgetFromName("Media2"));
-	ButtonMedia3 = Cast<UButton>(GetWidgetFromName("Media3"));
-	ButtonMedia4 = Cast<UButton>(GetWidgetFromName("Media4"));
-	ButtonMedia5 = Cast<UButton>(GetWidgetFromName("Media5"));
-	ButtonMedia6 = Cast<UButton>(GetWidgetFromName("Media6"));
-	ButtonMedia7 = Cast<UButton>(GetWidgetFromName("Media7"));
-	ButtonMedia8 = Cast<UButton>(GetWidgetFromName("Media8"));
-	ButtonMedia9 = Cast<UButton>(GetWidgetFromName("Media9"));
-	ButtonMedia10 = Cast<UButton>(GetWidgetFromName("Media10"));
-	ButtonMedia11 = Cast<UButton>(GetWidgetFromName("Media11"));
+	ButtonMedia1 = Cast<UButton>(GetWidgetFromName("BrowserMedia1"));
+	ButtonMedia2 = Cast<UButton>(GetWidgetFromName("BrowserMedia2"));
+	ButtonMedia3 = Cast<UButton>(GetWidgetFromName("BrowserMedia3"));
+	ButtonMedia4 = Cast<UButton>(GetWidgetFromName("BrowserMedia4"));
+	ButtonMedia5 = Cast<UButton>(GetWidgetFromName("BrowserMedia5"));
+	ButtonMedia6 = Cast<UButton>(GetWidgetFromName("BrowserMedia6"));
+	ButtonMedia7 = Cast<UButton>(GetWidgetFromName("BrowserMedia7"));
+	ButtonMedia8 = Cast<UButton>(GetWidgetFromName("BrowserMedia8"));
+	ButtonMedia9 = Cast<UButton>(GetWidgetFromName("BrowserMedia9"));
+	ButtonMedia10 = Cast<UButton>(GetWidgetFromName("BrowserMedia10"));
+	ButtonMedia11 = Cast<UButton>(GetWidgetFromName("BrowserMedia11"));
 
 	ScrollBoxScenes = Cast<UScrollBox>(GetWidgetFromName("SceneList"));
 	ScrollBoxContents = Cast<UScrollBox>(GetWidgetFromName("ContentsList"));
@@ -168,7 +170,7 @@ void UCSceneComposition::SetCategoryToMedia()
 				ImageSlot->SetHorizontalAlignment(HAlign_Left);
 				ImageSlot->SetVerticalAlignment(VAlign_Top);
 				
-				FButtonStyle ButtonStyle;
+				FButtonStyle ButtonStyle = MediaImage->GetStyle();
 				ButtonStyle.Normal.SetImageSize(FVector2D(260, 146));
 				ButtonStyle.Hovered.SetImageSize(FVector2D(260, 146));
 				ButtonStyle.Pressed.SetImageSize(FVector2D(260, 146));
@@ -421,6 +423,40 @@ void UCSceneComposition::FocusToScene()
 		}
 	}
 
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
+
+	TArray<FString> StringArray;
+	for (FString String : SaveGame->SceneContentList)
+	{
+		String.ParseIntoArray(StringArray, TEXT(","), true);
+		FString RefString = StringArray[1];
+		int MediaIndex;
+		FDefaultValueHelper::ParseInt(StringArray[2], MediaIndex);
+	}
+	
+	int IndexNumberCount = 0;
+	for (UWidget* Widget : CanvasPanelIndex->GetAllChildren())
+	{
+		UButton* Button = Cast<UButton>(Widget);
+		if (Button)
+		{
+			if (Button->GetStyle().Normal.GetResourceObject())
+			{
+				FString AddressName = Button->GetStyle().Normal.GetResourceObject()->GetPathName();
+				SaveGame->SceneContentList.Add("M," + AddressName + "," + FString::FromInt(IndexNumberCount));
+			}
+			
+			IndexNumberCount++;
+		}
+	}
+
+	for (int i = 0; i < SaveGame->SceneContentList.Num(); i++)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Blue, SaveGame->SceneContentList[i]);
+	}
+
+	ResetIndexPanel();
+
 	if (SceneName != "")
 	{
 		for (UWidget* Widget : Widgets)
@@ -505,6 +541,9 @@ void UCSceneComposition::ResetIndexPanel()
 		if (Button)
 		{
 			FButtonStyle ButtonStyle;
+			ButtonStyle.Normal.SetResourceObject(nullptr);
+			ButtonStyle.Pressed.SetResourceObject(nullptr);
+			ButtonStyle.Hovered.SetResourceObject(nullptr);
 			Button->SetStyle(ButtonStyle);
 		}
 	}

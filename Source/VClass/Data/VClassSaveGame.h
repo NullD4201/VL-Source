@@ -20,6 +20,9 @@ public:
 	TArray<FString> UploadMediaList = TArray<FString>();
 
 	UPROPERTY()
+	TArray<FString> SceneContentList = TArray<FString>();
+
+	UPROPERTY()
 	ImageAppearMode ImageMode;
 
 	UPROPERTY()
