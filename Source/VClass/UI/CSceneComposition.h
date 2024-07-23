@@ -10,6 +10,24 @@
 #include "Components/ScrollBox.h"
 #include "CSceneComposition.generated.h"
 
+USTRUCT()
+struct FStringArray
+{
+	GENERATED_BODY()
+public:
+	TArray<FString> Ar;
+
+	FString operator[] (int32 i)
+	{
+		return Ar[i];
+	}
+
+	void Add(FString String)
+	{
+		Ar.Add(String);
+	}
+};
+
 /**
  * 
  */
@@ -119,6 +137,9 @@ private:
 	UImage* ImageSceneHighlightDummy;
 	UImage* ImageMediaHighlightDummy;
 	UImage* ImageActorHighlightDummy;
+	
+	TMap<int, FString> Strings;
+	TMap<int, FString> ContentListofScene;
 
 	FString _Name;
 

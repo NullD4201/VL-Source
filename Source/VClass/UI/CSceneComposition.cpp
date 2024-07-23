@@ -90,6 +90,8 @@ void UCSceneComposition::NativeConstruct()
 	ButtonMedia11->OnClicked.AddDynamic(this, &UCSceneComposition::AddMedia);
 
 	CanvasPanelContentsBrowserMedia->SetVisibility(ESlateVisibility::Hidden);
+	
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
 }
 
 void UCSceneComposition::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -408,8 +410,10 @@ void UCSceneComposition::AddContent()
 	ScrollBoxContents->ScrollToEnd();
 }
 
+int CurrentSceneNumber = 0;
 void UCSceneComposition::FocusToScene()
 {
+	Strings.Empty();
 	CanvasPanelIndex->SetVisibility(ESlateVisibility::Visible);
 
 	TArray<UWidget*> Widgets;
@@ -423,39 +427,66 @@ void UCSceneComposition::FocusToScene()
 		}
 	}
 
-	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
+	if (SceneName != "")
+	{
+		FString SceneNumber = SceneName.Replace(TEXT("Scene"), TEXT(""));
+		int FutureSceneNumber = FCString::Atoi(*SceneNumber);
 
-	TArray<FString> StringArray;
-	for (FString String : SaveGame->SceneContentList)
-	{
-		String.ParseIntoArray(StringArray, TEXT(","), true);
-		FString RefString = StringArray[1];
-		int MediaIndex;
-		FDefaultValueHelper::ParseInt(StringArray[2], MediaIndex);
-	}
-	
-	int IndexNumberCount = 0;
-	for (UWidget* Widget : CanvasPanelIndex->GetAllChildren())
-	{
-		UButton* Button = Cast<UButton>(Widget);
-		if (Button)
+		if (FutureSceneNumber != CurrentSceneNumber)
 		{
-			if (Button->GetStyle().Normal.GetResourceObject())
-			{
-				FString AddressName = Button->GetStyle().Normal.GetResourceObject()->GetPathName();
-				SaveGame->SceneContentList.Add("M," + AddressName + "," + FString::FromInt(IndexNumberCount));
-			}
-			
-			IndexNumberCount++;
+			Strings.Empty();
 		}
-	}
 
-	for (int i = 0; i < SaveGame->SceneContentList.Num(); i++)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Blue, SaveGame->SceneContentList[i]);
-	}
+		FString _Text = "";
+		for (int i = 0; i < Strings.GetMaxIndex(); i++)
+		{
+			if (!Strings[i].IsEmpty())
+				_Text += Strings[i] + "," + FString::FromInt(i) + "\n";
+			else
+				break;
+		}			
+		if (!_Text.IsEmpty())
+			ContentListofScene.Add(CurrentSceneNumber, _Text);
 
-	ResetIndexPanel();
+		ResetIndexPanel();
+
+		for (UWidget* Widget : CanvasPanelIndex->GetAllChildren())
+		{
+			UButton* Button = Cast<UButton>(Widget);
+			if (Button)
+			{
+				FString ButtonName = Button->GetName();
+				int ButtonIndex = FCString::Atoi(*ButtonName.Replace(TEXT("Index"), TEXT("")));
+				if (!ContentListofScene.IsEmpty() && !ContentListofScene[FutureSceneNumber].IsEmpty())
+				{
+					FString SceneString = ContentListofScene[FutureSceneNumber];
+
+					if (!SceneString.IsEmpty())
+					{
+						TArray<FString> Values;
+						SceneString.ParseIntoArray(Values, TEXT("\n"), true);
+
+						for (FString String : Values)
+						{
+							TArray<FString> Keys;
+							String.ParseIntoArray(Keys, TEXT(","), true);
+
+							if (FString::FromInt(ButtonIndex) == Keys[2])
+							{
+								FButtonStyle ButtonStyle = Button->GetStyle();
+								ButtonStyle.Normal.SetResourceObject(LoadObject<UTexture>(nullptr, *Keys[1]));
+								ButtonStyle.Hovered.SetResourceObject(LoadObject<UTexture>(nullptr, *Keys[1]));
+								ButtonStyle.Pressed.SetResourceObject(LoadObject<UTexture>(nullptr, *Keys[1]));
+								Button->SetStyle(ButtonStyle);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		CurrentSceneNumber = FutureSceneNumber;
+	}
 
 	if (SceneName != "")
 	{
@@ -566,6 +597,22 @@ void UCSceneComposition::SetIndexButtonContent()
 				ButtonStyle.SetHovered(CurrentContent);
 				ButtonStyle.SetPressed(CurrentContent);
 				Button->SetStyle(ButtonStyle);
+
+				FString ButtonName = Button->GetName();
+				int ButtonIndex = FCString::Atoi(*ButtonName.Replace(TEXT("Index"), TEXT("")));
+
+				FString _Text;
+				if (CurrentCategory == Media)
+				{
+					_Text = "M";
+				}
+				else
+				{
+					_Text = "A";
+				}
+				_Text += "," + CurrentContent.GetResourceObject()->GetPathName();
+
+				Strings.Add(ButtonIndex, _Text);
 			}
 		}
 	}
