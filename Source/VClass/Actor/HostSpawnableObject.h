@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/SceneCaptureComponent2D.h"
+#include "Engine/TextureRenderTarget2D.h"
 #include "HostSpawnableObject.generated.h"
 
 UCLASS()
@@ -19,8 +21,18 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void Despawn();
+
+	UPROPERTY(VisibleAnywhere)
+	UTextureRenderTarget2D* RenderTarget;
+
+	UFUNCTION(BlueprintCallable)
+	UTexture2D* CaptureSceneToTexture();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	USceneCaptureComponent2D* SceneCaptureComponent;
 	
 private:
+	
 	UPROPERTY(ReplicatedUsing=OnRep_Scale)
 	FVector ReplicatedScale;
 

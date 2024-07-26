@@ -24,7 +24,7 @@ void UCPanelLiveHost::Init()
 	if(SaveGame)
 	{
 		
-		for(FString s : SaveGame->UploadMediaList)
+		/*for(FString s : SaveGame->UploadMediaList)
 		{
 			UMediaLiveItem* item = CreateWidget<UMediaLiveItem>(this,MediaListItem.Get());
 			if(item)
@@ -33,7 +33,7 @@ void UCPanelLiveHost::Init()
 				item->ClickedCallback.AddDynamic(this,&UCPanelLiveHost::OpenDisplaySocketSelector);
 				SlideList->AddChild(item);
 			}
-		}
+		}*/
 		UUserWidget* socket;
 		switch(SaveGame->ImageMode)
 		{

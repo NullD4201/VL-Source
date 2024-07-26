@@ -10,6 +10,8 @@
 #include "VClassGameMode.h"
 #include <PlayerVoiceChatActor.h>
 
+#include "VClass/Data/VClassSaveGame.h"
+
 AVClassPlayerController::AVClassPlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -188,4 +190,18 @@ void AVClassPlayerController::ClientGetClientRequest_Implementation(ClientReques
 	default:
 		break;
 	}
+}
+
+void AVClassPlayerController::HostLoadScene(int SceneNumber)
+{
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
+	if(SaveGame)
+	{
+		ObjectSpawner->ServerLoadScene(SaveGame->SceneContentList[SceneNumber]);
+	}
+}
+
+void AVClassPlayerController::LoadNextScene(){
+	CurrentSceneNum+=1;
+	HostLoadScene(CurrentSceneNum);
 }

@@ -64,6 +64,11 @@ public:
 	void ClientGetClientRequest(ClientRequest request);
 	void ClientGetClientRequest_Implementation(ClientRequest request);
 
+	UFUNCTION(BlueprintCallable)
+	void HostLoadScene(int SceneNumber);
+	UFUNCTION(BlueprintCallable)
+	void LoadNextScene();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UVClassGestureRecognitor* GestureRecognitor;
 
@@ -88,4 +93,6 @@ protected:
 	void OnInteract(const FInputActionValue& InputActionValue);
 
 	void CallLiveLoadingScreen();
+	
+	int CurrentSceneNum = -1;
 };

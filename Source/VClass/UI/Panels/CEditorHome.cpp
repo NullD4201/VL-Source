@@ -93,7 +93,7 @@ void UCEditorHome::UploadMedia()
 
 	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
 	
-	if(!MediaName.IsEmpty() && !SaveGame->UploadMediaList.Contains(MediaName.ToString()))
+	if(!MediaName.IsEmpty() /*&& !SaveGame->UploadMediaList.Contains(MediaName.ToString())*/)
 	{
 		AMainMenuGameMode* gamemode = Cast<AMainMenuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 		UImportFiles::OpenFileDialogueAndUploadImage(MediaName.ToString(), "http://"+gamemode->ImageServerIPAddress+":"+FString::FromInt(gamemode->ImageServerPort));
@@ -104,12 +104,12 @@ void UCEditorHome::UploadMedia()
 			MediaListScrollBox->AddChild(NewItem);
 		}
 		PanelMediaAdd->SetVisibility(ESlateVisibility::Hidden);
-		SaveGame->UploadMediaList.Add(MediaName.ToString());
+		/*SaveGame->UploadMediaList.Add(MediaName.ToString());
 		for(FString s : SaveGame->UploadMediaList)
 		{
 			UE_LOG(VClass, Warning, TEXT("%s"), *s);
 		}
-		UE_LOG(VClass, Warning, TEXT("%d"), SaveGame->UploadMediaList.Num());
+		UE_LOG(VClass, Warning, TEXT("%d"), SaveGame->UploadMediaList.Num());*/
 		UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"),0);
 	}
 }

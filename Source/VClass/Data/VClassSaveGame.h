@@ -20,7 +20,7 @@ public:
 	TArray<FString> UploadMediaList = TArray<FString>();
 
 	UPROPERTY()
-	TArray<FString> SceneContentList = TArray<FString>();
+	TArray<FString> SceneContentList = {"M,test,0\nY,https://www.youtube.com/watch?v=hbCigPs3UZ0,2","M,test2,4\nY,https://www.youtube.com/watch?v=rhiFOpo83Y0,0"};
 
 	UPROPERTY()
 	ImageAppearMode ImageMode;

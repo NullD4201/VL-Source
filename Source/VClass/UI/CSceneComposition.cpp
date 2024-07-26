@@ -8,6 +8,7 @@
 #include "Components/ScrollBoxSlot.h"
 #include "Misc/DefaultValueHelper.h"
 #include "VClass/Data/VClassSaveGame.h"
+#include "VClass/Player/MainMenuGameMode.h"
 
 
 void UCSceneComposition::NativeConstruct()
@@ -90,13 +91,16 @@ void UCSceneComposition::NativeConstruct()
 	ButtonMedia11->OnClicked.AddDynamic(this, &UCSceneComposition::AddMedia);
 
 	CanvasPanelContentsBrowserMedia->SetVisibility(ESlateVisibility::Hidden);
-	
-	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
 }
 
 void UCSceneComposition::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	for (auto It = ContentListofScene.CreateIterator(); It; ++It)
+	{
+		UE_LOG(VClass, Warning, TEXT("%d : %s"), It.Key(), *It.Value());
+	}
 
 	UScrollBoxSlot* _SceneSlot = Cast<UScrollBoxSlot>(ButtonAddScene->Slot);
 	if (_SceneSlot)
@@ -231,6 +235,17 @@ void UCSceneComposition::SetCategoryToActor()
 
 void UCSceneComposition::LiveMode()
 {
+	UVClassSaveGame* SaveGame = Cast<UVClassSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Main"),0));
+	if(SaveGame)
+	{
+		for (auto It = ContentListofScene.CreateIterator(); It; ++It)
+		{
+			SaveGame->SceneContentList.Add(It.Value());
+		}
+		UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("Main"),0);
+	}
+	AMainMenuGameMode* GameMode = Cast<AMainMenuGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	UGameplayStatics::OpenLevel(GetWorld(),FName(*(GameMode->StageServerIPAddress+TEXT(":")+FString::FromInt(GameMode->StageServerPort))),false,"isHost=true?key=1LdXL719W1Ys8pq66n69");
 }
 
 void UCSceneComposition::PreviewMode()

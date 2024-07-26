@@ -11,7 +11,7 @@ AMainMenuGameMode::AMainMenuGameMode()
 {
 	DefaultPawnClass = nullptr;
 	HUDClass = nullptr;
-	PlayerControllerClass = AMainMenuPlayerController::StaticClass();
+	//PlayerControllerClass = AMainMenuPlayerController::StaticClass();
 	SpectatorClass = nullptr;
 }
 
