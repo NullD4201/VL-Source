@@ -21,15 +21,6 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void Despawn();
-
-	UPROPERTY(VisibleAnywhere)
-	UTextureRenderTarget2D* RenderTarget;
-
-	UFUNCTION(BlueprintCallable)
-	UTexture2D* CaptureSceneToTexture();
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	USceneCaptureComponent2D* SceneCaptureComponent;
 	
 private:
 	
